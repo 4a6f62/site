@@ -113,6 +113,14 @@
     color: var(--fg);
   }
 
+  .motto {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    font-style: italic;
+    color: var(--brand);
+    margin: 0 0 26px;
+  }
+
   .handle {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
@@ -248,7 +256,7 @@
     color: var(--section-accent, var(--amber));
   }
 
-  /* youtube embed */
+  /* youtube embed / facade */
   .yt-frame {
     margin-top: 24px;
     border: 1px solid var(--line);
@@ -256,9 +264,52 @@
     aspect-ratio: 16/9;
     overflow: hidden;
     border-radius: 3px;
+    position: relative;
   }
   .yt-frame iframe {
     width: 100%; height: 100%; border: 0; display: block;
+  }
+
+  .yt-facade {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--bg-raised);
+    color: var(--fg);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    font-family: 'Public Sans', system-ui, sans-serif;
+  }
+  .yt-facade:hover, .yt-facade:focus-visible {
+    background: color-mix(in srgb, var(--bg-raised) 85%, var(--blood) 15%);
+  }
+  .yt-facade:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .yt-play {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--blood);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .yt-play svg { width: 20px; height: 22px; }
+  .yt-facade .yt-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .yt-facade .yt-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 40ch;
   }
 
   .stat-row {
@@ -343,6 +394,7 @@
     <h1 class="handle">4a6f62<span class="cursor" aria-hidden="true"></span></h1>
     <p class="tagline">Offensive security and retro horror Let's Plays. Occasionally rolling a d20 for chaos damage.</p>
     <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour — <code>#4a6f62</code></p>
+    <p class="motto">// Be the Butterfly.</p>
     <nav class="jump" aria-label="Section jump links">
       <a href="#youtube"><span class="n">01</span> youtube</a>
       <a href="#security"><span class="n">02</span> security</a>
@@ -373,14 +425,14 @@
       </div>
     </div>
 
-    <div class="yt-frame">
-      <iframe
-        src="https://www.youtube.com/embed/videoseries?list=UUf2KRp067F-apDi9qfmEHfQ&rel=0"
-        title="Latest uploads from 4a6f62"
-        loading="lazy"
-        allow="encrypted-media"
-        allowfullscreen>
-      </iframe>
+    <div class="yt-frame" id="ytFrame">
+      <button type="button" class="yt-facade" id="ytFacadeBtn" aria-label="Load and show videos (opens YouTube embed)">
+        <span class="yt-play" aria-hidden="true">
+          <svg viewBox="0 0 20 22" fill="var(--amber-fg)"><polygon points="0,0 20,11 0,22"></polygon></svg>
+        </span>
+        <span class="yt-label">Click to load videos</span>
+        <span class="yt-note">This loads a YouTube embed and may let YouTube set cookies. See the <a href="/privacy.html" style="color:inherit; text-decoration:underline;">privacy policy</a>.</span>
+      </button>
     </div>
 
     <div class="btn-row">
@@ -427,6 +479,7 @@
       <a href="https://github.com/4a6f62" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/jobcastrop" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">Oath of Chaos</a>
+      <a href="/privacy.html">Privacy Policy</a>
     </div>
     <p class="foot-note"><span class="swatch" aria-hidden="true"></span>4a6f62.com</p>
   </footer>
@@ -435,13 +488,24 @@
 
 <script>
   // ---- EDIT ME ----
-  // Live subscriber counts can't be pulled automatically from a static
-  // page (YouTube's API needs a server-side key). Put your current
-  // count here and it'll show above the video embed.
   const SUBSCRIBER_COUNT = null; // e.g. "1.2K"
-
   const el = document.getElementById('subCount');
   if (el) el.textContent = SUBSCRIBER_COUNT || '—';
+
+  // Click-to-load YouTube embed: nothing from youtube.com/youtube-nocookie.com
+  // loads until the visitor explicitly clicks. Uses the privacy-enhanced
+  // youtube-nocookie.com domain to further limit tracking once loaded.
+  document.getElementById('ytFacadeBtn').addEventListener('click', function () {
+    var frame = document.getElementById('ytFrame');
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/videoseries?list=UUf2KRp067F-apDi9qfmEHfQ&rel=0&autoplay=1';
+    iframe.title = 'Latest uploads from 4a6f62';
+    iframe.loading = 'lazy';
+    iframe.allow = 'encrypted-media; autoplay';
+    iframe.allowFullscreen = true;
+    frame.innerHTML = '';
+    frame.appendChild(iframe);
+  });
 </script>
 
 </body>
