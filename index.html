@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4a6f62</title>
+<meta name="description" content="4a6f62: offensive security, retro horror Let's Plays, indie games, and Smiles the Unalive, a chaotic undead paladin.">
+<link rel="icon" type="image/png" href="/assets/smiles-token.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,6 +15,7 @@
   :root {
     --bg: #f1ede2;
     --bg-raised: #e7e1d1;
+    --term-bg: #e2dccb;
     --line: #cdc4ac;
     --fg: #201f1a;
     --muted: #6b6555;
@@ -21,6 +24,7 @@
     --blood: #8f251e;
     --violet: #5b4b82;
     --brand: #4a6f62;
+    --ghost: #2f7a4f;
     --focus: #1b6ea8;
   }
 
@@ -28,6 +32,7 @@
     :root:not([data-theme="light"]) {
       --bg: #0b0c0a;
       --bg-raised: #15170f;
+      --term-bg: #080907;
       --line: #2b2d24;
       --fg: #e9e4d4;
       --muted: #8b8a78;
@@ -36,6 +41,7 @@
       --blood: #d1564c;
       --violet: #a996d9;
       --brand: #6f9686;
+      --ghost: #5ef08f;
       --focus: #6fc3ff;
     }
   }
@@ -43,6 +49,7 @@
   :root[data-theme="dark"] {
     --bg: #0b0c0a;
     --bg-raised: #15170f;
+    --term-bg: #080907;
     --line: #2b2d24;
     --fg: #e9e4d4;
     --muted: #8b8a78;
@@ -51,12 +58,14 @@
     --blood: #d1564c;
     --violet: #a996d9;
     --brand: #6f9686;
+    --ghost: #5ef08f;
     --focus: #6fc3ff;
   }
 
   * { box-sizing: border-box; }
 
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
   body {
     margin: 0;
@@ -66,23 +75,68 @@
     font-size: 17px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-  .mono { font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; }
+  .mono, code, kbd { font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; }
+  kbd {
+    font-size: .85em;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 5px;
+    background: var(--bg-raised);
+  }
 
   .wrap {
-    max-width: 700px;
+    max-width: 760px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 20px;
   }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 0 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .topbar .status-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ghost);
+    margin-right: 6px;
+    box-shadow: 0 0 6px var(--ghost);
+  }
+  .theme-btn {
+    font: inherit;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .theme-btn:hover { color: var(--fg); border-color: var(--brand); }
 
   /* ---------- hero ---------- */
 
   header.hero {
     border-bottom: 1px solid var(--line);
-    padding: 72px 0 40px;
+    padding: 48px 0 40px;
   }
 
   .prompt-line {
@@ -93,10 +147,55 @@
   }
   .prompt-line .sigil { color: var(--brand); }
 
+  .handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 9vw, 3.8rem);
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    position: relative;
+  }
+  .handle .decoded {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .handle .decoded b { color: var(--brand); font-weight: 500; }
+
+  .cursor {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.85em;
+    background: var(--brand);
+    margin-left: 4px;
+    transform: translateY(0.1em);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .tagline {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 50ch;
+    margin: 18px 0 8px;
+  }
+
+  .motto {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    font-style: italic;
+    color: var(--brand);
+    margin: 0 0 26px;
+  }
+
   .colorline {
     font-size: 13px;
     color: var(--muted);
-    margin: -10px 0 26px;
+    margin: 0 0 26px;
   }
   .swatch {
     display: inline-block;
@@ -108,55 +207,12 @@
     vertical-align: -2px;
     margin-right: 7px;
   }
-  .colorline code {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--fg);
-  }
-
-  .motto {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13.5px;
-    font-style: italic;
-    color: var(--brand);
-    margin: 0 0 26px;
-  }
-
-  .handle {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    font-size: clamp(2.4rem, 8vw, 3.6rem);
-    margin: 0 0 6px;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-  }
-
-  .cursor {
-    display: inline-block;
-    width: 0.5em;
-    height: 0.85em;
-    background: var(--brand);
-    margin-left: 4px;
-    transform: translateY(0.1em);
-    animation: blink 1s steps(1) 6;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cursor { animation: none; opacity: 1; }
-  }
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-
-  .tagline {
-    font-size: 1.1rem;
-    color: var(--muted);
-    max-width: 46ch;
-    margin: 0 0 28px;
-  }
+  .colorline code { color: var(--fg); }
 
   nav.jump {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 22px;
+    gap: 6px 20px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
   }
@@ -167,18 +223,102 @@
     padding-bottom: 2px;
   }
   nav.jump a:hover,
-  nav.jump a:focus-visible {
-    border-bottom-color: var(--brand);
-  }
+  nav.jump a:focus-visible { border-bottom-color: var(--brand); }
   nav.jump a .n { color: var(--muted); }
+
+  /* ---------- interactive terminal ---------- */
+  .term {
+    margin: 30px 0 30px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--term-bg);
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.55;
+    position: relative;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-raised);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .term-bar i {
+    width: 11px; height: 11px; border-radius: 50%;
+    display: inline-block; background: var(--line);
+  }
+  .term-bar i:nth-child(1) { background: var(--blood); }
+  .term-bar i:nth-child(2) { background: var(--amber); }
+  .term-bar i:nth-child(3) { background: var(--brand); }
+  .term-bar span { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .term-out {
+    padding: 14px 14px 4px;
+    height: 260px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overscroll-behavior: contain;
+  }
+  .term-out .ln { min-height: 1.55em; }
+  .term-out .dim { color: var(--muted); }
+  .term-out .ok { color: var(--ghost); }
+  .term-out .warn { color: var(--amber); }
+  .term-out .err { color: var(--blood); }
+  .term-out .vio { color: var(--violet); }
+  .term-out .cmdecho .sigil { color: var(--brand); }
+  .term-out a { color: var(--ghost); }
+
+  .term-in {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 12px;
+  }
+  .term-in label { color: var(--brand); white-space: nowrap; }
+  .term-in input {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    color: var(--fg);
+    background: transparent;
+    border: 0;
+    outline: none;
+    caret-color: var(--ghost);
+    padding: 4px 0;
+  }
+  .term:focus-within { border-color: var(--brand); }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 14px 14px;
+  }
+  .chips button {
+    font: inherit;
+    font-size: 12px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-radius: 3px;
+    padding: 3px 8px;
+    cursor: pointer;
+  }
+  .chips button:hover { color: var(--fg); border-color: var(--brand); border-style: solid; }
 
   /* ---------- sections ---------- */
 
   section {
     padding: 56px 0;
     border-bottom: 1px solid var(--line);
+    scroll-margin-top: 8px;
   }
-  section:last-of-type { border-bottom: none; }
 
   .cmd {
     font-family: 'JetBrains Mono', monospace;
@@ -196,11 +336,7 @@
     color: var(--fg);
   }
 
-  section p.lead {
-    max-width: 56ch;
-    color: var(--fg);
-  }
-
+  section p.lead { max-width: 58ch; color: var(--fg); }
   section p.lead + p.lead { margin-top: 12px; }
 
   .accent-bar {
@@ -220,22 +356,22 @@
     font-size: 14px;
     font-weight: 500;
     text-decoration: none;
-    padding: 11px 18px;
+    padding: 10px 16px;
     border: 1px solid var(--section-accent, var(--amber));
     color: var(--section-accent, var(--amber));
+    background: transparent;
     border-radius: 3px;
     margin-top: 22px;
+    cursor: pointer;
     transition: background-color .15s ease, color .15s ease;
   }
   .btn:hover, .btn:focus-visible {
     background: var(--section-accent, var(--amber));
-    color: var(--bg-raised);
+    color: var(--bg);
   }
-  .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 0 12px; }
 
-  /* about pillars */
   ul.pillars {
     list-style: none;
     padding: 0;
@@ -256,6 +392,88 @@
     color: var(--section-accent, var(--amber));
   }
 
+  /* ---------- achievements ---------- */
+  .xp {
+    margin: 4px 0 26px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .xp-track {
+    height: 10px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+    background: var(--bg-raised);
+  }
+  .xp-fill {
+    height: 100%;
+    width: 0;
+    background: repeating-linear-gradient(90deg, var(--section-accent) 0 8px, transparent 8px 10px);
+    transition: width 1.6s cubic-bezier(.2,.8,.2,1);
+  }
+  @media (prefers-reduced-motion: reduce) { .xp-fill { transition: none; } }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .filters button {
+    font: inherit;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .filters button[aria-pressed="true"] {
+    color: var(--bg);
+    background: var(--section-accent);
+    border-color: var(--section-accent);
+  }
+
+  ol.log {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  ol.log li {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--tag, var(--section-accent));
+    border-radius: 3px;
+    padding: 12px 14px;
+    background: color-mix(in srgb, var(--bg) 70%, var(--bg-raised) 30%);
+  }
+  ol.log li[hidden] { display: none; }
+  .log .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .log .unlock { font-size: 11px; color: var(--ghost); letter-spacing: .06em; }
+  .log .tag {
+    font-size: 11px;
+    color: var(--tag);
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    padding: 0 5px;
+  }
+  .log .title { font-weight: 700; font-size: 14.5px; flex-basis: 100%; }
+  .log .desc { font-size: 14.5px; color: var(--muted); margin-top: 4px; }
+  .log .desc a { color: var(--fg); }
+  .log .rarity { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+  .log .rarity b { color: var(--tag); font-weight: 500; }
+
   /* youtube embed / facade */
   .yt-frame {
     margin-top: 24px;
@@ -266,9 +484,7 @@
     border-radius: 3px;
     position: relative;
   }
-  .yt-frame iframe {
-    width: 100%; height: 100%; border: 0; display: block;
-  }
+  .yt-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 
   .yt-facade {
     width: 100%;
@@ -284,53 +500,27 @@
     gap: 14px;
     padding: 24px;
     font-family: 'Public Sans', system-ui, sans-serif;
+    background-image: repeating-linear-gradient(0deg, transparent 0 2px, color-mix(in srgb, var(--fg) 4%, transparent) 2px 3px);
   }
   .yt-facade:hover, .yt-facade:focus-visible {
-    background: color-mix(in srgb, var(--bg-raised) 85%, var(--blood) 15%);
+    background-color: color-mix(in srgb, var(--bg-raised) 85%, var(--blood) 15%);
   }
-  .yt-facade:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .yt-facade:focus-visible { outline-offset: -2px; }
   .yt-play {
-    width: 56px;
-    height: 56px;
+    width: 56px; height: 56px;
     border-radius: 50%;
     background: var(--blood);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .yt-play svg { width: 20px; height: 22px; }
-  .yt-facade .yt-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .yt-facade .yt-note {
-    font-size: 12.5px;
-    color: var(--muted);
-    text-align: center;
-    max-width: 40ch;
-  }
+  .yt-facade .yt-label { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; }
+  .yt-facade .yt-note { font-size: 12.5px; color: var(--muted); text-align: center; max-width: 40ch; }
 
-  .stat-row {
-    display: flex;
-    gap: 32px;
-    margin-top: 24px;
-    flex-wrap: wrap;
-  }
-  .stat {
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .stat .val {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--section-accent, var(--amber));
-    display: block;
-  }
-  .stat .lbl {
-    font-size: 12.5px;
-    color: var(--muted);
-  }
+  .stat-row { display: flex; gap: 32px; margin-top: 24px; flex-wrap: wrap; }
+  .stat { font-family: 'JetBrains Mono', monospace; }
+  .stat .val { font-size: 1.6rem; font-weight: 700; color: var(--section-accent, var(--amber)); display: block; }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); }
 
   /* repo list */
   .repo {
@@ -343,45 +533,259 @@
     color: var(--fg);
     transition: border-color .15s ease;
   }
-  .repo:hover, .repo:focus-visible {
-    border-color: var(--section-accent, var(--amber));
-  }
-  .repo .name {
+  a.repo:hover, a.repo:focus-visible { border-color: var(--section-accent, var(--amber)); }
+  .repo .name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14.5px; }
+  .repo .desc { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  /* ---------- games ---------- */
+  .ls-head {
     font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    font-size: 14.5px;
-  }
-  .repo .desc {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--muted);
-    margin-top: 4px;
+    margin: 0 0 12px;
+  }
+  .games {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+    gap: 14px;
+  }
+  .game {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    background: color-mix(in srgb, var(--bg) 70%, var(--bg-raised) 30%);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .game:hover { border-color: var(--section-accent); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) { .game:hover { transform: none; } }
+  .game.featured { grid-column: 1 / -1; border-color: var(--section-accent); }
+  .game .perm { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted); }
+  .game h3 { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; margin: 0; }
+  .game .genre { font-size: 13px; color: var(--section-accent); font-family: 'JetBrains Mono', monospace; }
+  .game p { font-size: 14.5px; color: var(--muted); margin: 0; }
+  .game .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1px 6px;
+    color: var(--muted);
+  }
+  .pill.live { color: var(--ghost); border-color: var(--ghost); }
+  .pill.wip { color: var(--amber); border-color: var(--amber); }
+  .game .btn { margin-top: 10px; align-self: flex-start; }
+
+  /* ---------- Smiles ---------- */
+  #smiles { --section-accent: var(--ghost); }
+  .smiles-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 28px;
+    align-items: start;
+    margin-top: 8px;
+  }
+  .portrait {
+    position: relative;
+    text-align: center;
+  }
+  .portrait img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--ghost) 35%, transparent));
+    cursor: pointer;
+    transition: transform .2s ease;
+  }
+  .portrait img:hover { transform: rotate(-2deg) scale(1.02); }
+  .portrait img.cackle { animation: cackle .5s steps(2) 3; }
+  @keyframes cackle {
+    0% { transform: rotate(-4deg); }
+    100% { transform: rotate(4deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portrait img:hover, .portrait img.cackle { transform: none; animation: none; }
+  }
+  .bubble {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--fg);
+    border: 1px solid var(--ghost);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 14px;
+    text-align: left;
+    position: relative;
+    min-height: 5.2em;
+  }
+  .bubble::before {
+    content: '';
+    position: absolute;
+    top: -7px; left: 50%;
+    width: 12px; height: 12px;
+    background: var(--bg);
+    border-left: 1px solid var(--ghost);
+    border-top: 1px solid var(--ghost);
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .sheet {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    overflow: hidden;
+  }
+  .sheet .sh-head {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-raised);
+  }
+  .sheet .sh-name { font-size: 1.05rem; font-weight: 700; }
+  .sheet .sh-sub { color: var(--muted); font-size: 12px; font-style: italic; }
+  .sheet .sh-body { padding: 12px 14px; display: grid; gap: 10px; }
+  .vitals { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .vitals b { color: var(--ghost); font-weight: 700; }
+  .abil {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    text-align: center;
+  }
+  .abil div {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 6px 2px;
+  }
+  .abil span { display: block; font-size: 10.5px; color: var(--muted); letter-spacing: .05em; }
+  .abil strong { font-size: 15px; }
+  .abil em { display: block; font-style: normal; font-size: 11px; color: var(--muted); }
+  .sheet dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+  .sheet dt { color: var(--muted); }
+  .sheet dd { margin: 0; }
+
+  .tenets { margin-top: 28px; display: grid; gap: 10px; }
+  .tenet {
+    font-size: 14.5px;
+    color: var(--muted);
+    padding-left: 14px;
+    border-left: 2px solid var(--violet);
+  }
+  .tenet strong { color: var(--fg); font-family: 'JetBrains Mono', monospace; font-size: 13.5px; }
+
+  .roller {
+    margin-top: 28px;
+    border: 1px dashed var(--ghost);
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .roller h3 { font-family: 'JetBrains Mono', monospace; font-size: 1rem; margin: 0 0 6px; }
+  .roller p.small { font-size: 14px; color: var(--muted); margin: 0; max-width: 60ch; }
+  .roller .btn { margin-top: 14px; }
+  .roll-out {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    min-height: 3.2em;
+  }
+  .roll-out .die {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4em; height: 2.4em;
+    border: 2px solid var(--ghost);
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--ghost);
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .roll-out .die.spin { animation: spin .5s ease-out; }
+  @keyframes spin { from { transform: rotate(-200deg) scale(.6); } to { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .roll-out .die.spin { animation: none; } }
+  .roll-out .effect { display: inline; }
+  .roll-out .effect b { color: var(--fg); }
+
+  .crew {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
   /* footer */
-  footer {
-    padding: 40px 0 64px;
-  }
+  footer { padding: 40px 0 64px; }
   footer .prompt-line { margin-bottom: 10px; }
   .foot-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 18px;
+    gap: 10px 18px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
   }
   .foot-links a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
   .foot-links a:hover, .foot-links a:focus-visible { text-decoration-color: var(--brand); }
+  .foot-note { margin-top: 28px; font-size: 13px; color: var(--muted); }
+  .foot-note .hint { display: block; margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; opacity: .75; }
 
-  .foot-note {
-    margin-top: 28px;
-    font-size: 13px;
-    color: var(--muted);
+  /* ---------- easter eggs ---------- */
+  .peek {
+    position: fixed;
+    right: 16px;
+    bottom: -220px;
+    width: 110px;
+    z-index: 50;
+    transition: bottom .45s cubic-bezier(.3,1.6,.5,1);
+    pointer-events: none;
+  }
+  .peek.show { bottom: -30px; }
+  .peek img { width: 100%; height: auto; display: block; }
+  .peek .say {
+    position: absolute;
+    bottom: 100%;
+    right: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--amber-fg);
+    background: var(--ghost);
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-bottom: -40px;
+  }
+  .butterfly {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    z-index: 60;
+    animation: flutter 2.6s ease-out forwards;
+  }
+  @keyframes flutter {
+    0% { transform: translate(0,0) scale(.4); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(1); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .peek { transition: none; }
+    .butterfly { display: none; }
   }
 
-  @media (max-width: 560px) {
-    header.hero { padding: 52px 0 32px; }
+  @media (max-width: 600px) {
+    header.hero { padding: 36px 0 32px; }
     section { padding: 44px 0; }
     .stat-row { gap: 22px; }
+    .smiles-grid { grid-template-columns: 1fr; }
+    .portrait img { max-width: 160px; }
+    .abil { grid-template-columns: repeat(3, 1fr); }
+    .term-out { height: 230px; font-size: 12.5px; }
   }
 </style>
 </head>
@@ -389,31 +793,263 @@
 
 <div class="wrap">
 
+  <div class="topbar">
+    <span><span class="status-dot" aria-hidden="true"></span>session: guest@4a6f62</span>
+    <button type="button" class="theme-btn" id="themeBtn" aria-label="Toggle light or dark theme">theme: auto</button>
+  </div>
+
   <header class="hero">
     <p class="prompt-line"><span class="sigil">$</span> whoami</p>
-    <h1 class="handle">4a6f62<span class="cursor" aria-hidden="true"></span></h1>
-    <p class="tagline">Offensive security and retro horror Let's Plays. Occasionally rolling a d20 for chaos damage.</p>
-    <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour — <code>#4a6f62</code></p>
+    <h1 class="handle">4a6f62<span class="cursor" aria-hidden="true"></span>
+      <span class="decoded">// echo 4a6f62 | xxd -r -p → <b>Job</b></span>
+    </h1>
+    <p class="tagline">Ethical hacker by day. Retro horror Let's Plays, indie games and an undead paladin with a d12 of bad ideas by night.</p>
     <p class="motto">// Be the Butterfly.</p>
+    <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour: <code>#4a6f62</code></p>
+
+    <div class="term" id="term">
+      <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>guest@4a6f62: ~ (bash)</span></div>
+      <div class="term-out" id="termOut" role="log" aria-live="polite" aria-label="Terminal output"></div>
+      <form class="term-in" id="termForm" autocomplete="off">
+        <label for="termInput">guest@4a6f62:~$</label>
+        <input id="termInput" type="text" spellcheck="false" autocapitalize="off" placeholder="type 'help'" aria-describedby="termHint">
+      </form>
+      <div class="chips" id="termChips" aria-label="Suggested commands">
+        <button type="button" data-cmd="help">help</button>
+        <button type="button" data-cmd="achievements">achievements</button>
+        <button type="button" data-cmd="ls games">ls games</button>
+        <button type="button" data-cmd="smiles">smiles</button>
+        <button type="button" data-cmd="roll d20">roll d20</button>
+        <button type="button" data-cmd="hack">hack</button>
+      </div>
+      <p id="termHint" class="sr-only">Interactive terminal. Type help for a list of commands. Everything here is also available in the sections below.</p>
+    </div>
+
     <nav class="jump" aria-label="Section jump links">
-      <a href="#youtube"><span class="n">01</span> youtube</a>
+      <a href="#achievements"><span class="n">01</span> achievements</a>
       <a href="#security"><span class="n">02</span> security</a>
-      <a href="#dnd"><span class="n">03</span> tabletop</a>
-      <a href="#game"><span class="n">04</span> game</a>
-      <a href="#contact"><span class="n">05</span> contact</a>
+      <a href="#games"><span class="n">03</span> games</a>
+      <a href="#smiles"><span class="n">04</span> smiles</a>
+      <a href="#dnd"><span class="n">05</span> tabletop</a>
+      <a href="#youtube"><span class="n">06</span> youtube</a>
+      <a href="#contact"><span class="n">07</span> contact</a>
     </nav>
   </header>
 
   <section id="about">
     <p class="cmd"><span class="sigil">$</span> cat about.txt</p>
-    <p class="lead">I break into things for a living and get chased by things in games for fun. By day: web application and infrastructure pentesting. By night: retro and indie horror Let's Plays, and a slowly-escalating homebrew D&D habit.</p>
+    <p class="lead">I break into things for a living and get chased by things in games for fun. By day: web application and infrastructure pentesting, plus building the tooling that makes the reporting less painful. By night: retro and indie horror Let's Plays, making games in Godot, and a homebrew D&amp;D habit that has gotten <em>completely</em> out of hand.</p>
+    <p class="lead">Most of it stars the same skeleton. More on him <a href="#smiles">below</a>.</p>
   </section>
 
+  <!-- ============ ACHIEVEMENTS ============ -->
+  <section id="achievements" style="--section-accent: var(--amber);">
+    <p class="cmd"><span class="sigil">$</span> tail -n 20 achievements.log</p>
+    <div class="accent-bar"></div>
+    <h2>Achievements unlocked</h2>
+
+    <div class="xp">
+      <span id="xpLabel">LVL ?? · loading XP…</span>
+      <div class="xp-track" aria-hidden="true"><div class="xp-fill" id="xpFill"></div></div>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter achievements">
+      <button type="button" data-filter="all" aria-pressed="true">all</button>
+      <button type="button" data-filter="sec" aria-pressed="false">security</button>
+      <button type="button" data-filter="dev" aria-pressed="false">tooling</button>
+      <button type="button" data-filter="game" aria-pressed="false">games</button>
+      <button type="button" data-filter="dnd" aria-pressed="false">tabletop</button>
+    </div>
+
+    <ol class="log" id="achList"></ol>
+  </section>
+
+  <!-- ============ SECURITY ============ -->
+  <section id="security" style="--section-accent: var(--brand);">
+    <p class="cmd"><span class="sigil">$</span> cd security/ &amp;&amp; ls</p>
+    <div class="accent-bar"></div>
+    <h2>Security work</h2>
+    <p class="lead">Web application and infrastructure pentesting, tested against frameworks like OWASP ASVS, the OWASP Top 10 and DigiD (ENSIA). Write-ups for Hack The Box challenges and OSCP-style practice labs live on GitHub.</p>
+
+    <a class="repo" href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">
+      <div class="name">4a6f62 / Write-ups</div>
+      <div class="desc">Hack The Box challenges and OSCP practice lab machines. Educational notes on offensive security.</div>
+    </a>
+
+    <div class="repo">
+      <div class="name">Report Sorcadin <span class="pill">internal tool</span></div>
+      <div class="desc">A Flask app for working through a pentest per framework (DigiD/ENSIA, OWASP ASVS 5.0, OWASP Top 10:2025) and generating the Word report at the end. Local accounts, mandatory TOTP MFA, one-time invite links. Because nobody became a hacker to format tables.</div>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn" href="https://app.hackthebox.com/users/202098" target="_blank" rel="noopener">Hack The Box profile</a>
+      <a class="btn" href="https://github.com/4a6f62" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/jobcastrop" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <!-- ============ GAMES ============ -->
+  <section id="games" style="--section-accent: var(--blood);">
+    <p class="cmd"><span class="sigil">$</span> ls -la ~/games/</p>
+    <div class="accent-bar"></div>
+    <h2>Games</h2>
+    <p class="lead">Small games, mostly made in Godot, nearly all starring Smiles. Some are out, some are still in the forge.</p>
+    <p class="ls-head" aria-hidden="true">total <span id="gameCount">6</span> · drwxr-xr-x smiles chaos</p>
+
+    <div class="games">
+      <article class="game featured">
+        <span class="perm" aria-hidden="true">-rwxr-xr-x  smiles-chaos-unbound/</span>
+        <h3>Smiles: Chaos Unbound</h3>
+        <span class="genre">arcade beat 'em up · Godot 4</span>
+        <p>Smiles takes his glaive on an episodic rampage: Poultry Panic! (ending in Chicken Zilla and its nuclear breath), Swamp Sabbat's Hezrou metal band, the frozen realm of Nia-Nar to rescue Blobby the smile cube, and the Chickenesis Lab. Glaive combos, a chaos smite that goes volatile 1 time in 12, an invulnerable leap, and an illustrated cinematic at the start and end of every episode.</p>
+        <div class="meta"><span class="pill live">● playable on itch.io</span><span class="pill">web</span><span class="pill">5 episodes</span></div>
+        <a class="btn" href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">▶ Play on itch.io</a>
+      </article>
+
+      <article class="game">
+        <span class="perm" aria-hidden="true">-rw-r--r--  return-to-bonkey-island/</span>
+        <h3>Return to Bonkey Island</h3>
+        <span class="genre">point-and-click · Godot 4</span>
+        <p><em>…a whale of a weekend.</em> A 9-verb adventure with paper-cut characters. Insult sword fighting, a Sass-Off, a Giant Head that only laughs at pratfalls, and a bottle of DO NOT. Answers what happened during the weekend that lasted a year and a day.</p>
+        <div class="meta"><span class="pill wip">in the forge</span><span class="pill">linux · windows · web</span></div>
+      </article>
+
+      <article class="game">
+        <span class="perm" aria-hidden="true">-rw-r--r--  smiles-in-the-dark/</span>
+        <h3>Smiles in the Dark</h3>
+        <span class="genre">survival horror · 320×200</span>
+        <p>A love letter to early-90s fixed-camera horror. Pre-rendered VGA backgrounds, a flat-shaded polygon Smiles, tank controls and AdLib-style FM music. He comes home to a silent Spire and the portcullis drops behind him. It also doubles as a CTF challenge. Flags not included. Obviously.</p>
+        <div class="meta"><span class="pill wip">in the forge</span><span class="pill">ctf</span></div>
+      </article>
+
+      <article class="game">
+        <span class="perm" aria-hidden="true">-rw-r--r--  escape-the-basement-of-madness/</span>
+        <h3>Escape the Basement of Madness</h3>
+        <span class="genre">hacker horror · Unity</span>
+        <p>Wake up in a control room under a ruined sanctuary. Look, take, use, <code>hack</code>. Every death moves you into a slightly different world, and the screen-headed corpses in the dark look more familiar each time. Who was 5P3CT3R?</p>
+        <div class="meta"><span class="pill wip">in the forge</span><span class="pill">text + 3D</span></div>
+      </article>
+
+      <article class="game">
+        <span class="perm" aria-hidden="true">-rw-r--r--  grinning-spire-mod/</span>
+        <h3>The Grinning Spire (Minecraft mod)</h3>
+        <span class="genre">Fabric mod · MC 1.21.1</span>
+        <p>Smiles' tower in Minecraft, made after someone (my son) TNT'd it on day one. The Spire repairs itself, Grrarrg throws out griefers and creepers, skeletons turn into Bonejangles, and Smiles casts Chaos Bolt with the full Volatile Smite table.</p>
+        <div class="meta"><span class="pill wip">in the forge</span><span class="pill">java</span></div>
+      </article>
+
+      <article class="game">
+        <span class="perm" aria-hidden="true">-rw-r--r--  poultry-panic/</span>
+        <h3>Poultry Panic! (prototype)</h3>
+        <span class="genre">prototype · Godot</span>
+        <p>Where the chickens started: a playable take on the Poultry Panic! one-shot, with hens, the Rooster King and a Chicken Abomination. It grew into Chaos Unbound's first episode.</p>
+        <div class="meta"><span class="pill">archived</span></div>
+      </article>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn" href="https://4a6f62.itch.io" target="_blank" rel="noopener">All games on itch.io</a>
+    </div>
+  </section>
+
+  <!-- ============ SMILES ============ -->
+  <section id="smiles">
+    <p class="cmd"><span class="sigil">$</span> sudo -u smiles cat /etc/alter-ego</p>
+    <div class="accent-bar"></div>
+    <h2>Smiles the Unalive</h2>
+    <p class="lead">My D&amp;D character and alter ego. Once a noble paladin, he picked up a cursed amulet, became a living skeleton and gave up his old oaths for the Oath of Chaos. He now runs the Grinning Spire, hands out impossible quests and bizarre chicken-themed magic items, and pays in Fabulous Feat Stamps™. He plays with his enemies instead of killing them. A defeated foe gets a joke, not a killing blow.</p>
+
+    <div class="smiles-grid">
+      <div class="portrait">
+        <img src="/assets/smiles.png" alt="Smiles: a grinning skeleton in rusted plate armour and a tattered green hood, holding a glaive, green flame in his other hand" width="227" height="550" id="smilesImg" title="poke him">
+        <div class="bubble" id="smilesQuote" aria-live="polite">"Myaaaah! I knew I heard the sound of possible disappointment clanking up my stairs!"</div>
+      </div>
+
+      <div class="sheet" aria-label="Smiles character sheet">
+        <div class="sh-head">
+          <div class="sh-name">Smiles the Unalive</div>
+          <div class="sh-sub">Medium undead, chaotic neutral · Paladin 7 (Oath of Chaos) / Shadow Sorcerer 4</div>
+        </div>
+        <div class="sh-body">
+          <div class="vitals">
+            <span>AC <b>19</b></span>
+            <span>HP <b>73</b> <span style="color:var(--muted)">(11d10+12)</span></span>
+            <span>Speed <b>30 ft.</b></span>
+            <span>CR <b>9</b></span>
+          </div>
+          <div class="abil">
+            <div><span>STR</span><strong>17</strong><em>+3</em></div>
+            <div><span>DEX</span><strong>10</strong><em>+0</em></div>
+            <div><span>CON</span><strong>12</strong><em>+1</em></div>
+            <div><span>INT</span><strong>10</strong><em>+0</em></div>
+            <div><span>WIS</span><strong>10</strong><em>+0</em></div>
+            <div><span>CHA</span><strong>15</strong><em>+2</em></div>
+          </div>
+          <dl>
+            <dt>Weapon</dt><dd>Vicious Glaive +1 · +8 to hit, reach 10 ft., 1d10+4 slashing</dd>
+            <dt>Spell DC</dt><dd>14</dd>
+            <dt>Immune</dt><dd>poison; charmed, frightened, poisoned</dd>
+            <dt>Senses</dt><dd>darkvision 120 ft. (Eyes of the Dark)</dd>
+            <dt>Languages</dt><dd>Common, Sylvan, dramatic high-pitched "MYAAH!"</dd>
+            <dt>Gear</dt><dd>Sending Stone of Shrillness (always yells)</dd>
+            <dt>Nemesis</dt><dd>Solarion, his painfully radiant paladin nephew</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="tenets">
+      <div class="tenet"><strong>Change is the Only Constant.</strong> Stagnation is death.</div>
+      <div class="tenet"><strong>Be the Butterfly.</strong> A single spark can overturn empires.</div>
+      <div class="tenet"><strong>Break Every Cage.</strong> No prison, dogma or spell may bind free will.</div>
+    </div>
+
+    <div class="roller">
+      <h3>Volatile Smite</h3>
+      <p class="small">When Smiles rolls a 1 on his first Divine Smite die, chaos overflows onto the <strong>Table of Volatile Entropy</strong>. Go on, roll it. (Rolling a 42 anywhere on this site triggers <em>The Answer</em>.)</p>
+      <div class="btn-row">
+        <button type="button" class="btn" id="rollD12">🎲 roll d12 entropy</button>
+        <button type="button" class="btn" id="rollD20">🎲 roll d20</button>
+      </div>
+      <div class="roll-out" id="rollOut" aria-live="polite"><span class="dim" style="color:var(--muted)">// awaiting chaos…</span></div>
+    </div>
+
+    <p class="cmd" style="margin-top:28px; margin-bottom:8px;"><span class="sigil">$</span> ls /spire/residents</p>
+    <div class="crew">
+      <span class="pill">Sir Clatterton, skeletal butler</span>
+      <span class="pill">Grrarrg the Softfisted</span>
+      <span class="pill">Twice-Wrong, mad inventor</span>
+      <span class="pill">Miss Deme Anor, shadow sorceress</span>
+      <span class="pill">Gurglor the Moist</span>
+      <span class="pill">Blobby, a smile cube</span>
+    </div>
+  </section>
+
+  <!-- ============ TABLETOP ============ -->
+  <section id="dnd" style="--section-accent: var(--violet);">
+    <p class="cmd"><span class="sigil">$</span> cd tabletop/</p>
+    <div class="accent-bar"></div>
+    <h2>Oath of Chaos &amp; the Grinning Spire</h2>
+    <p class="lead">Smiles' own homebrew Paladin subclass for D&amp;D 5e, rebalanced across several revisions and kept honest against the official Oaths. It's on the web in sourcebook style and as 5etools JSON.</p>
+    <ul class="pillars">
+      <li>Volatile Smite and the d12 Table of Volatile Entropy (rubber chickens and whales included)</li>
+      <li>Chaotic Swap, Unshackle Loyalty, Entropy's Favor</li>
+      <li><em>The Answer</em>: roll a 42 on anything and reality bends. Don't Panic.</li>
+      <li>Avatar of Pure Anarchy at 20th level</li>
+    </ul>
+    <p class="lead" style="margin-top:22px;">I also run my own one-shots set in and around the Spire, in English and Dutch: <em>Attack on the Spire</em>, <em>Poultry Panic!</em>, <em>Blobby</em>, <em>Where Is Smiles?</em> and <em>Grrarrg's Day Off</em>. Side effects may include uncontrollable laughter and a sudden urge to yell "Myaah!".</p>
+    <div class="btn-row">
+      <a class="btn" href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">Read the subclass</a>
+      <a class="btn" href="https://github.com/4a6f62/homebrew" target="_blank" rel="noopener">5etools JSON</a>
+    </div>
+  </section>
+
+  <!-- ============ YOUTUBE ============ -->
   <section id="youtube" style="--section-accent: var(--blood);">
     <p class="cmd"><span class="sigil">$</span> open youtube/</p>
     <div class="accent-bar"></div>
     <h2>Let's Plays</h2>
-    <p class="lead">Retro and old-school horror games, plus indie horror titles from small developers — played through with running commentary, for anyone who likes their nostalgia a little unsettling.</p>
+    <p class="lead">Retro and old-school horror games, plus indie horror from small developers, played with running commentary for anyone who likes their nostalgia a little unsettling.</p>
 
     <div class="stat-row">
       <div class="stat">
@@ -442,79 +1078,503 @@
     </div>
   </section>
 
-  <section id="security">
-    <p class="cmd"><span class="sigil">$</span> cd security/</p>
-    <div class="accent-bar"></div>
-    <h2>Security work</h2>
-    <p class="lead">Focused on web application and infrastructure pentesting. Write-ups and CTF/box notes live on GitHub.</p>
-
-    <a class="repo" href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">
-      <div class="name">4a6f62 / Write-ups</div>
-      <div class="desc">CTF, HTB/box, and pentesting write-ups — educational notes on offensive security.</div>
-    </a>
-
-    <div class="btn-row">
-      <a class="btn" href="https://github.com/4a6f62" target="_blank" rel="noopener">View GitHub profile</a>
-    </div>
-  </section>
-
-  <section id="dnd" style="--section-accent: var(--violet);">
-    <p class="cmd"><span class="sigil">$</span> cd tabletop/</p>
-    <div class="accent-bar"></div>
-    <h2>Oath of Chaos</h2>
-    <p class="lead">A homebrew D&D 5e Paladin subclass, built and rebalanced across several revisions — chaotic in flavor, kept honest against the official Oaths.</p>
-    <ul class="pillars">
-      <li>Volatile Smite &amp; Entropy's Favor</li>
-      <li>Aura of Unbound Chaos</li>
-      <li>A d12 table of volatile entropy effects</li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn" href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">Read the subclass</a>
-    </div>
-  </section>
-
-  <section id="game" style="--section-accent: var(--brand);">
-    <p class="cmd"><span class="sigil">$</span> cd games/</p>
-    <div class="accent-bar"></div>
-    <h2>Smiles: Chaos Unbound</h2>
-    <p class="lead">A Godot 4 arcade beat 'em up starring Smiles, an undead glaive-wielding paladin whose chaos smite can turn any fight unpredictable. Five episodes, from the Grinning Spire to the Chickenesis Lab, each open and close with a full illustrated cinematic.</p>
-    <ul class="pillars">
-      <li>Glaive combos, a chaos smite, and an invulnerable leap</li>
-      <li>Five-episode campaign with illustrated cinematic intros and endings</li>
-      <li>A growing roster of hand-drawn enemies, from eldritch chickens to a nuclear-breathing Chicken Zilla</li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn" href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">Play on itch.io</a>
-      <a class="btn" href="https://github.com/4a6f62/smiles-chaos-unbound" target="_blank" rel="noopener">View source</a>
-    </div>
-  </section>
-
   <footer id="contact">
     <p class="prompt-line mono"><span class="sigil">$</span> cat contact.txt</p>
     <div class="foot-links">
-      <a href="https://www.youtube.com/@4a6f62" target="_blank" rel="noopener">YouTube</a>
-      <a href="https://github.com/4a6f62" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/jobcastrop" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://app.hackthebox.com/users/202098" target="_blank" rel="noopener">Hack The Box</a>
+      <a href="https://github.com/4a6f62" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.youtube.com/@4a6f62" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">itch.io</a>
       <a href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">Oath of Chaos</a>
-      <a href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">Chaos Unbound</a>
       <a href="/privacy.html">Privacy Policy</a>
     </div>
-    <p class="foot-note"><span class="swatch" aria-hidden="true"></span>4a6f62.com</p>
+    <p class="foot-note"><span class="swatch" aria-hidden="true"></span>4a6f62.com
+      <span class="hint">// ↑ ↑ ↓ ↓ ← → ← → b a</span>
+    </p>
   </footer>
 
 </div>
 
-<script>
-  // ---- EDIT ME ----
-  const SUBSCRIBER_COUNT = null; // e.g. "1.2K"
-  const el = document.getElementById('subCount');
-  if (el) el.textContent = SUBSCRIBER_COUNT || '—';
+<div class="peek" id="peek" aria-hidden="true">
+  <span class="say">MYAAH!</span>
+  <img src="/assets/smiles-token.png" alt="" width="256" height="256">
+</div>
 
-  // Click-to-load YouTube embed: nothing from youtube.com/youtube-nocookie.com
-  // loads until the visitor explicitly clicks. Uses the privacy-enhanced
-  // youtube-nocookie.com domain to further limit tracking once loaded.
-  document.getElementById('ytFacadeBtn').addEventListener('click', function () {
-    var frame = document.getElementById('ytFrame');
+<script>
+(function () {
+  'use strict';
+
+  // ================== EDIT ME ==================
+  var SUBSCRIBER_COUNT = null; // e.g. "1.2K"
+
+  // Achievements. Newest first. tag: sec | dev | game | dnd
+  // Add LinkedIn certifications and Hack The Box milestones here, e.g.:
+  //   { tag: 'sec', title: 'OSCP', desc: 'Offensive Security Certified Professional.', rarity: 'legendary', when: '2025' },
+  //   { tag: 'sec', title: 'HTB: Pro Hacker', desc: 'Reached Pro Hacker rank on Hack The Box.', rarity: 'epic', when: '2026' },
+  var ACHIEVEMENTS = [
+    { tag: 'game', title: 'Shipped: Smiles: Chaos Unbound', when: '2026',
+      desc: 'Published a five-episode Godot beat \'em up on <a href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">itch.io</a>, with a synthesized chiptune score, illustrated cinematics and an automated test suite.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'Capture the Flag… designer', when: '2026',
+      desc: 'Turned a retro horror game into a CTF challenge with flags hidden across several skill paths and decoys for the <code>strings</code> crowd.',
+      rarity: 'rare' },
+    { tag: 'dev', title: 'Automated the boring part', when: '2026',
+      desc: 'Built Report Sorcadin, a multi-user pentest reporting platform for DigiD (ENSIA), OWASP ASVS 5.0 and OWASP Top 10:2025, with TOTP MFA built in.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'Box breaker', when: 'ongoing',
+      desc: 'Pwning machines and Pro Labs on <a href="https://app.hackthebox.com/users/202098" target="_blank" rel="noopener">Hack The Box</a>. Challenges and OSCP practice labs are written up in public <a href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">write-ups</a>.',
+      rarity: 'rare' },
+    { tag: 'dnd', title: 'Homebrewer', when: '2026',
+      desc: 'Designed and balanced the Oath of Chaos Paladin subclass, published as a <a href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">sourcebook page</a> and 5etools JSON.',
+      rarity: 'rare' },
+    { tag: 'dnd', title: 'Dungeon Master', when: 'ongoing',
+      desc: 'Wrote and ran a bilingual (EN/NL) series of one-shots set around the Grinning Spire.',
+      rarity: 'uncommon' },
+    { tag: 'game', title: 'Polyglot game dev', when: '2026',
+      desc: 'Godot, Unity and a Fabric Minecraft mod, all in one year. The skeleton gets around.',
+      rarity: 'uncommon' },
+    { tag: 'sec', title: 'Crypto-curious', when: '2020',
+      desc: 'Worked through the Cryptopals crypto challenges in Python.',
+      rarity: 'uncommon' },
+    { tag: 'dev', title: 'Hello, World', when: '2012',
+      desc: 'Pushed a first game to GitHub. It was JavaScript. We don\'t talk about it.',
+      rarity: 'common' }
+  ];
+  // =============================================
+
+  var $ = function (s) { return document.querySelector(s); };
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); };
+  var strip = function (s) { var d = document.createElement('div'); d.innerHTML = s; return d.textContent; };
+
+  // ---------- subscribers ----------
+  $('#subCount').textContent = SUBSCRIBER_COUNT || '—';
+
+  // ---------- theme toggle ----------
+  var themeBtn = $('#themeBtn');
+  var themes = ['auto', 'dark', 'light'];
+  function applyTheme(t) {
+    if (t === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', t);
+    themeBtn.textContent = 'theme: ' + t;
+    try { localStorage.setItem('theme', t); } catch (e) {}
+  }
+  var savedTheme = 'auto';
+  try { savedTheme = localStorage.getItem('theme') || 'auto'; } catch (e) {}
+  applyTheme(themes.indexOf(savedTheme) > -1 ? savedTheme : 'auto');
+  themeBtn.addEventListener('click', function () {
+    var cur = document.documentElement.getAttribute('data-theme') || 'auto';
+    applyTheme(themes[(themes.indexOf(cur) + 1) % themes.length]);
+  });
+
+  // ---------- achievements ----------
+  var TAGS = {
+    sec:  { label: 'security', color: 'var(--brand)' },
+    dev:  { label: 'tooling',  color: 'var(--amber)' },
+    game: { label: 'games',    color: 'var(--blood)' },
+    dnd:  { label: 'tabletop', color: 'var(--violet)' }
+  };
+  var XP = { common: 50, uncommon: 100, rare: 250, epic: 500, legendary: 1000 };
+  var list = $('#achList');
+  var totalXp = 0;
+  ACHIEVEMENTS.forEach(function (a) {
+    var t = TAGS[a.tag] || TAGS.dev;
+    var xp = XP[a.rarity] || 50;
+    totalXp += xp;
+    var li = document.createElement('li');
+    li.dataset.tag = a.tag;
+    li.style.setProperty('--tag', t.color);
+    li.innerHTML =
+      '<div class="head"><span class="unlock">[✓] UNLOCKED</span><span class="tag">' + t.label + '</span>' +
+      (a.when ? '<span class="unlock" style="color:var(--muted)">' + esc(a.when) + '</span>' : '') +
+      '<span class="title">' + esc(a.title) + '</span></div>' +
+      '<div class="desc">' + a.desc + '</div>' +
+      '<div class="rarity">rarity: <b>' + esc(a.rarity || 'common') + '</b> · +' + xp + ' XP</div>';
+    list.appendChild(li);
+  });
+
+  var level = Math.floor(totalXp / 300) + 1;
+  var into = totalXp % 300;
+  $('#xpLabel').textContent = 'LVL ' + level + ' · ' + totalXp + ' XP · ' + (300 - into) + ' XP to next level';
+  var xpFill = $('#xpFill');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries, obs) {
+      if (entries[0].isIntersecting) { xpFill.style.width = (into / 300 * 100) + '%'; obs.disconnect(); }
+    }).observe(xpFill);
+  } else { xpFill.style.width = (into / 300 * 100) + '%'; }
+
+  document.querySelectorAll('.filters button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.dataset.filter;
+      document.querySelectorAll('.filters button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      list.querySelectorAll('li').forEach(function (li) { li.hidden = !(f === 'all' || li.dataset.tag === f); });
+    });
+  });
+
+  // ---------- Smiles quotes ----------
+  var QUOTES = [
+    '"Myaaaah! I knew I heard the sound of possible disappointment clanking up my stairs!"',
+    '"Don\'t say ol\' Smiles never gave you anything… besides trauma and mild tinnitus."',
+    '"Rules? Cages! And what do we do with cages, recruit? We BREAK them! MYAAH!"',
+    '"At least my chaos has character."',
+    '"That was the plan. All of it. Especially the petunias."',
+    '"I used to be a paladin… but fabulous secret powers were revealed to me the day I picked up this mighty amulet!"',
+    '"Your firewall is very orderly. I hate it. MYAAH!"',
+    '"Penetration test? I prefer the term \'unsolicited chaos audit\'."'
+  ];
+  var qi = 0;
+  var smilesImg = $('#smilesImg');
+  var quoteEl = $('#smilesQuote');
+  function nextQuote() {
+    qi = (qi + 1) % QUOTES.length;
+    quoteEl.textContent = QUOTES[qi];
+    return QUOTES[qi];
+  }
+  smilesImg.addEventListener('click', function (e) {
+    nextQuote();
+    smilesImg.classList.remove('cackle'); void smilesImg.offsetWidth; smilesImg.classList.add('cackle');
+    butterflies(e.clientX, e.clientY, 6);
+  });
+
+  // ---------- dice ----------
+  var ENTROPY = [
+    ['Entropic Backlash', 'Violent magic tears outward. You and the target both take necrotic damage.'],
+    ['Gravity Collapse', 'Everything nearby gets yanked next to the target and knocked prone.'],
+    ['Mind-Fraying Flash', 'A blinding eldritch flash. Hope your Constitution is good.'],
+    ['Bleeding Rift', 'Dimensional fog swirls around the target; the next hit deals extra force damage.'],
+    ['Vampiric Rupture', 'Maximum smite damage, and Smiles drinks some of it back.'],
+    ['Anarchic Surge', 'Double radiant damage. The target is launched 20 feet away.'],
+    ['Improbability Shift', 'The target\'s weapon becomes a rubber chicken. Cosmetically. Probably.'],
+    ['Perspective Shock', 'The target briefly understands the universe. Frightened and incapacitated.'],
+    ['Babel Scramble', 'Nearby foes take psychic damage and forget how words work.'],
+    ['The Ultimate Answer', '+4 force damage, and the next roll within a minute gets +10.'],
+    ['Gravity\'s Joke', 'If airborne, Smiles becomes a Large whale and falls. Somewhere, a bowl of petunias thinks "oh no, not again."'],
+    ['Butterfly Effect', 'A harmless cloud of glowing butterflies erupts. Be the Butterfly.']
+  ];
+  var d = function (n) {
+    if (window.crypto && crypto.getRandomValues) {
+      var a = new Uint32Array(1), lim = Math.floor(0xFFFFFFFF / n) * n;
+      do { crypto.getRandomValues(a); } while (a[0] >= lim);
+      return (a[0] % n) + 1;
+    }
+    return Math.floor(Math.random() * n) + 1;
+  };
+  var rollOut = $('#rollOut');
+  function showDie(val, html) {
+    rollOut.innerHTML = '<span class="die spin">' + val + '</span><span class="effect">' + html + '</span>';
+  }
+  function rollEntropy(fromEl) {
+    var r = d(12), e = ENTROPY[r - 1];
+    showDie(r, '<b>' + esc(e[0]) + '.</b> ' + esc(e[1]));
+    if (r === 12 || r === 7) burstFrom(fromEl);
+    return { roll: r, name: e[0], text: e[1] };
+  }
+  function d20text(r) {
+    if (r === 20) return '<b>NAT 20!</b> Smiles cackles approvingly. MYAAH!';
+    if (r === 1) return '<b>Nat 1.</b> Your glaive is now a rubber chicken. Fitting.';
+    if (r >= 15) return 'Solid hit. Solarion is visibly annoyed.';
+    if (r >= 8) return 'It\'ll do. Chaos is patient.';
+    return 'Oof. Sir Clatterton writes it down in triplicate.';
+  }
+  $('#rollD12').addEventListener('click', function (e) { rollEntropy(e.currentTarget); });
+  $('#rollD20').addEventListener('click', function (e) {
+    var r = d(20);
+    showDie(r, d20text(r));
+    if (r === 20) burstFrom(e.currentTarget);
+  });
+
+  // ---------- butterflies ----------
+  function butterflies(x, y, n) {
+    if (reduceMotion) return;
+    for (var i = 0; i < n; i++) {
+      var b = document.createElement('span');
+      b.className = 'butterfly';
+      b.textContent = ['🦋', '✨', '🦋'][i % 3];
+      b.style.left = x + 'px';
+      b.style.top = y + 'px';
+      b.style.setProperty('--dx', (Math.random() * 240 - 120) + 'px');
+      b.style.setProperty('--dy', (-80 - Math.random() * 200) + 'px');
+      b.style.setProperty('--rot', (Math.random() * 90 - 45) + 'deg');
+      b.style.filter = 'hue-rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+      document.body.appendChild(b);
+      setTimeout(function (el) { el.remove(); }, 2700, b);
+    }
+  }
+  function burstFrom(el) {
+    var r = (el || document.body).getBoundingClientRect();
+    butterflies(r.left + r.width / 2, r.top + r.height / 2, 14);
+  }
+
+  // ---------- Smiles peek (Konami / myaah) ----------
+  var peek = $('#peek');
+  var peekTimer;
+  function myaah() {
+    peek.classList.add('show');
+    clearTimeout(peekTimer);
+    peekTimer = setTimeout(function () { peek.classList.remove('show'); }, 2600);
+    butterflies(window.innerWidth - 70, window.innerHeight - 120, 10);
+  }
+  var KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  var kpos = 0;
+  document.addEventListener('keydown', function (e) {
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    kpos = (k === KONAMI[kpos]) ? kpos + 1 : (k === KONAMI[0] ? 1 : 0);
+    if (kpos === KONAMI.length) { kpos = 0; myaah(); }
+  });
+
+  // ---------- terminal ----------
+  var out = $('#termOut');
+  var input = $('#termInput');
+  var history = [], hpos = 0;
+
+  function line(html, cls) {
+    var d = document.createElement('div');
+    d.className = 'ln' + (cls ? ' ' + cls : '');
+    d.innerHTML = html;
+    out.appendChild(d);
+    out.scrollTop = out.scrollHeight;
+  }
+  function lines(arr, cls) { arr.forEach(function (l) { line(l, cls); }); }
+  function typeLines(arr, delay, done) {
+    if (reduceMotion) { arr.forEach(function (l) { line(l[0], l[1]); }); if (done) done(); return; }
+    var i = 0;
+    (function step() {
+      if (i >= arr.length) { if (done) done(); return; }
+      line(arr[i][0], arr[i][1]); i++;
+      setTimeout(step, delay);
+    })();
+  }
+  function goTo(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
+  var GAMES = [
+    ['smiles-chaos-unbound', 'arcade beat \'em up', 'live on itch.io'],
+    ['return-to-bonkey-island', 'point-and-click', 'in the forge'],
+    ['smiles-in-the-dark', 'survival horror / ctf', 'in the forge'],
+    ['escape-the-basement-of-madness', 'hacker horror', 'in the forge'],
+    ['grinning-spire-mod', 'minecraft mod', 'in the forge'],
+    ['poultry-panic', 'prototype', 'archived']
+  ];
+
+  var COMMANDS = {
+    help: function () {
+      lines([
+        '<span class="warn">available commands</span>',
+        '  whoami          who is this',
+        '  achievements    cat achievements.log',
+        '  ls games        what\'s in ~/games',
+        '  smiles          meet the alter ego',
+        '  quote           Smiles says something',
+        '  roll [NdM]      roll dice, e.g. roll 2d6 (d20 by default)',
+        '  entropy         roll on the Table of Volatile Entropy',
+        '  hack            definitely a real hack',
+        '  nmap            scan this site',
+        '  goto &lt;section&gt;  achievements|security|games|smiles|dnd|youtube|contact',
+        '  theme           cycle light/dark/auto',
+        '  socials         where to find me',
+        '  clear           clear the screen',
+        '<span class="dim">psst: there are more commands than this. try things.</span>'
+      ]);
+    },
+    whoami: function () {
+      lines([
+        'job (aka <span class="ok">4a6f62</span>, hex for "Job")',
+        'role:    ethical hacker / pentester',
+        'hobbies: horror Let\'s Plays, gamedev, D&amp;D',
+        'alt:     <span class="ok">Smiles the Unalive</span>, chaotic neutral undead paladin',
+        'motto:   Be the Butterfly.'
+      ]);
+    },
+    achievements: function () {
+      line('<span class="warn">tail achievements.log</span>');
+      ACHIEVEMENTS.forEach(function (a) {
+        line('<span class="ok">[✓]</span> ' + esc(a.title) + ' <span class="dim">(' + esc(a.rarity) + ')</span>');
+      });
+      line('<span class="dim">→ full log: goto achievements</span>');
+    },
+    ls: function (args) {
+      var target = (args[0] || '').replace(/^~?\/?/, '').replace(/\/$/, '');
+      if (target === 'games') {
+        line('<span class="dim">total ' + GAMES.length + '</span>');
+        GAMES.forEach(function (g) {
+          var cls = g[2].indexOf('live') === 0 ? 'ok' : (g[2] === 'archived' ? 'dim' : 'warn');
+          line('drwxr-xr-x  <span class="vio">' + g[0] + '/</span>  <span class="dim">' + g[1] + '</span>  <span class="' + cls + '">' + g[2] + '</span>');
+        });
+        line('<span class="dim">→ play: <a href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">4a6f62.itch.io/smiles-chaos-unbound</a></span>');
+      } else if (target === '' || target === '.') {
+        line('<span class="vio">achievements/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  <span class="dim">.secret</span>');
+      } else if (target === '-la' || target === '-a') {
+        line('<span class="vio">.</span>  <span class="vio">..</span>  <span class="dim">.secret</span>  <span class="dim">.bash_history</span>  achievements/  games/  smiles/  about.txt');
+      } else {
+        line('ls: cannot access \'' + esc(target) + '\': No such file or directory', 'err');
+      }
+    },
+    cat: function (args) {
+      var f = (args[0] || '').replace(/^~?\/?/, '');
+      if (f === 'about.txt') line('I break into things for a living and get chased by things in games for fun.');
+      else if (f === 'contact.txt') COMMANDS.socials();
+      else if (f === '.secret') line('<span class="ok">↑ ↑ ↓ ↓ ← → ← → b a</span>');
+      else if (f === '.bash_history') lines(['nmap -sC -sV spire.local', 'hydra -l solarion -P rockyou.txt spire.local ssh', 'echo "petunias" &gt; whale.txt', 'sudo make me-a-sandwich', '<span class="dim">rm -rf /order-of-the-static-light</span>']);
+      else if (f === 'achievements.log') COMMANDS.achievements();
+      else if (f === '/etc/passwd') lines(['root:x:0:0:root:/root:/bin/bash', 'smiles:x:42:42:Smiles the Unalive,,,:/spire/boneroom:/bin/chaos', 'solarion:x:1000:1000:nice try:/cathedral:/usr/sbin/nologin', '<span class="dim">// you thought.</span>']);
+      else line('cat: ' + esc(f || '') + ': No such file or directory', 'err');
+    },
+    smiles: function () {
+      lines([
+        '<span class="ok">Smiles the Unalive</span>  · Paladin 7 (Oath of Chaos) / Shadow Sorcerer 4',
+        'AC 19 · HP 73 · CR 9 · STR 17 CHA 15',
+        'Vicious Glaive +1: +8 to hit, 1d10+4',
+        '<span class="dim">"' + esc(strip(QUOTES[qi]).replace(/^"|"$/g, '')) + '"</span>'
+      ]);
+      goTo('smiles');
+    },
+    quote: function () { line('<span class="ok">smiles&gt;</span> ' + esc(nextQuote())); },
+    myaah: function () { line('<span class="ok">MYAAAAAH!</span>'); myaah(); },
+    roll: function (args) {
+      var spec = (args[0] || 'd20').toLowerCase();
+      var m = spec.match(/^(\d{0,2})d(\d{1,4})([+-]\d{1,3})?$/);
+      if (!m) { line('usage: roll [NdM[+K]]  e.g. roll 2d6+3', 'err'); return; }
+      var n = Math.max(1, Math.min(parseInt(m[1] || '1', 10), 50));
+      var sides = Math.max(2, Math.min(parseInt(m[2], 10), 1000));
+      var mod = parseInt(m[3] || '0', 10);
+      var rolls = []; for (var i = 0; i < n; i++) rolls.push(d(sides));
+      var total = rolls.reduce(function (a, b) { return a + b; }, 0) + mod;
+      line('🎲 ' + n + 'd' + sides + (mod ? (mod > 0 ? '+' : '') + mod : '') + ' → [' + rolls.join(', ') + '] = <span class="warn">' + total + '</span>');
+      if (n === 1 && sides === 20 && rolls[0] === 20) line('<span class="ok">NAT 20! MYAAH!</span>');
+      if (n === 1 && sides === 20 && rolls[0] === 1) line('<span class="err">nat 1. your weapon is now a rubber chicken.</span>');
+      if (total === 42) theAnswer();
+    },
+    entropy: function () {
+      var r = rollEntropy($('#rollD12'));
+      line('🎲 d12 → <span class="warn">' + r.roll + '</span>  <span class="ok">' + esc(r.name) + '.</span> ' + esc(r.text));
+    },
+    '42': function () { theAnswer(); },
+    hack: function () {
+      input.disabled = true;
+      var bar = function (p) { var f = Math.round(p / 5); return '[' + '#'.repeat(f) + '.'.repeat(20 - f) + '] ' + p + '%'; };
+      typeLines([
+        ['[*] target acquired: <span class="warn">Cathedral of the Static Light</span>', ''],
+        ['[*] enumerating paladins… 3 found (all named Solarion)', ''],
+        ['[*] bypassing holy firewall… ' + bar(35), 'dim'],
+        ['[*] bypassing holy firewall… ' + bar(80), 'dim'],
+        ['[*] bypassing holy firewall… ' + bar(100), 'dim'],
+        ['[+] shell obtained as <span class="ok">chaos@cathedral</span>', 'ok'],
+        ['[+] replacing all stained glass with pictures of chickens', 'ok'],
+        ['[!] this was a joke. scope + written permission, kids. always.', 'warn']
+      ], 380, function () { input.disabled = false; input.focus(); });
+    },
+    nmap: function () {
+      lines([
+        'Starting Nmap 7.95 ( https://nmap.org )',
+        'Nmap scan report for 4a6f62.com',
+        'PORT      STATE  SERVICE',
+        '80/tcp    open   http',
+        '443/tcp   open   https',
+        '1337/tcp  open   d20-roller',
+        '31337/tcp <span class="dim">filtered</span> <span class="dim">nice-try</span>',
+        '4242/tcp  open   the-answer',
+        'Service Info: Host: grinning-spire; OS: Chaos'
+      ]);
+    },
+    sudo: function (args) {
+      var rest = args.join(' ');
+      if (/rm\s+-rf/.test(rest)) line('Nice try. Grrarrg has thrown you out the front door. <span class="dim">(SpireGuard™)</span>', 'err');
+      else if (rest === 'make me a sandwich' || rest === 'make me-a-sandwich') line('okay. 🥪', 'ok');
+      else line('guest is not in the sudoers file. This incident will be reported to Sir Clatterton, in triplicate.', 'err');
+    },
+    rm: function () { line('rm: permission denied. The Spire repairs itself anyway.', 'err'); },
+    goto: function (args) {
+      var map = { achievements: 'achievements', security: 'security', games: 'games', smiles: 'smiles', dnd: 'dnd', tabletop: 'dnd', youtube: 'youtube', contact: 'contact', about: 'about' };
+      var id = map[(args[0] || '').toLowerCase()];
+      if (id) { line('→ ' + id, 'dim'); goTo(id); } else line('goto: unknown section. try: ' + Object.keys(map).join(', '), 'err');
+    },
+    cd: function (args) {
+      var a = (args[0] || '').replace(/\/$/, '');
+      if (a === '..' || a === '/') line('You can check out any time you like, but you can never leave.', 'vio');
+      else COMMANDS.goto([a]);
+    },
+    theme: function () { themeBtn.click(); line(themeBtn.textContent, 'dim'); },
+    socials: function () {
+      lines([
+        'linkedin  <a href="https://www.linkedin.com/in/jobcastrop" target="_blank" rel="noopener">linkedin.com/in/jobcastrop</a>',
+        'htb       <a href="https://app.hackthebox.com/users/202098" target="_blank" rel="noopener">app.hackthebox.com/users/202098</a>',
+        'github    <a href="https://github.com/4a6f62" target="_blank" rel="noopener">github.com/4a6f62</a>',
+        'youtube   <a href="https://www.youtube.com/@4a6f62" target="_blank" rel="noopener">youtube.com/@4a6f62</a>',
+        'itch.io   <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">4a6f62.itch.io</a>'
+      ]);
+    },
+    clear: function () { out.innerHTML = ''; },
+    exit: function () { line('There is no exit. Only the Spire. MYAAH!', 'vio'); },
+    ping: function () { line('PONG. (the Sending Stone of Shrillness is very loud)'); },
+    xxd: function () { line('4a6f62 → Job'); },
+    echo: function (args) { line(esc(args.join(' '))); },
+    date: function () { line(new Date().toString() + ' <span class="dim">(the weekend lasted a year and a day)</span>'); },
+    vim: function () { line('You are now trapped in vim. Just like Smiles in his Spire. (:q! won\'t help here)', 'warn'); },
+    whale: function () { line('🐋 Oh no, not again.  <span class="dim">— a bowl of petunias</span>'); }
+  };
+  COMMANDS.dir = COMMANDS.ls;
+  COMMANDS['?'] = COMMANDS.help;
+  COMMANDS.games = function () { COMMANDS.ls(['games']); };
+  COMMANDS.nano = COMMANDS.emacs = COMMANDS.vim;
+
+  function theAnswer() {
+    var effects = ['Don\'t Panic.', 'So Long, and Thanks for All the Fish.', 'Mostly Harmless.', '42.'];
+    line('<span class="ok">✶ THE ANSWER ✶</span> reality bends: <span class="warn">' + effects[d(4) - 1] + '</span>');
+    myaah();
+  }
+
+  function run(raw) {
+    var cmd = raw.trim();
+    line('<span class="sigil">$</span> ' + esc(cmd), 'cmdecho');
+    if (!cmd) return;
+    history.push(cmd); hpos = history.length;
+    var parts = cmd.split(/\s+/);
+    var name = parts[0].toLowerCase();
+    var fn = Object.prototype.hasOwnProperty.call(COMMANDS, name) ? COMMANDS[name] : null;
+    if (fn) fn(parts.slice(1));
+    else line(esc(name) + ': command not found. type <span class="warn">help</span>', 'err');
+  }
+
+  $('#termForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = input.value;
+    input.value = '';
+    run(v);
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp' && history.length) { e.preventDefault(); hpos = Math.max(0, hpos - 1); input.value = history[hpos]; }
+    else if (e.key === 'ArrowDown' && history.length) { e.preventDefault(); hpos = Math.min(history.length, hpos + 1); input.value = history[hpos] || ''; }
+    else if (e.key === 'Tab') {
+      var v = input.value.toLowerCase();
+      if (!v) return;
+      var match = Object.keys(COMMANDS).filter(function (k) { return k.indexOf(v) === 0; });
+      if (match.length === 1) { e.preventDefault(); input.value = match[0] + ' '; }
+    }
+  });
+  $('#termChips').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-cmd]');
+    if (b) run(b.dataset.cmd);
+  });
+  $('#term').addEventListener('click', function (e) {
+    if (!e.target.closest('a, button') && !window.getSelection().toString()) input.focus({ preventScroll: true });
+  });
+
+  typeLines([
+    ['4a6f62 OS v4.2 (chaos) · tty1', 'dim'],
+    ['[ <span class="ok">OK</span> ] mounted /spire/boneroom', ''],
+    ['[ <span class="ok">OK</span> ] loaded glaive.ko, chaos_smite.ko', ''],
+    ['[ <span class="warn">!!</span> ] solarion.service: too radiant, disabled', ''],
+    ['welcome, guest. type <span class="warn">help</span> or tap a command below.', '']
+  ], 260);
+
+  // ---------- YouTube click-to-load ----------
+  // Nothing from youtube.com/youtube-nocookie.com loads until the visitor clicks.
+  // Uses the privacy-enhanced youtube-nocookie.com domain once loaded.
+  $('#ytFacadeBtn').addEventListener('click', function () {
+    var frame = $('#ytFrame');
     var iframe = document.createElement('iframe');
     iframe.src = 'https://www.youtube-nocookie.com/embed/videoseries?list=UUf2KRp067F-apDi9qfmEHfQ&rel=0&autoplay=1';
     iframe.title = 'Latest uploads from 4a6f62';
@@ -524,6 +1584,13 @@
     frame.innerHTML = '';
     frame.appendChild(iframe);
   });
+
+  // ---------- console greeting ----------
+  try {
+    console.log('%c MYAAH! ', 'background:#4a6f62;color:#fff;font:700 16px monospace;padding:4px 8px');
+    console.log('Poking around the source? Respect. Try the Konami code, or type "hack" in the terminal.');
+  } catch (e) {}
+})();
 </script>
 
 </body>
