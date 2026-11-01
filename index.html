@@ -1475,16 +1475,30 @@
     list.appendChild(li);
   });
 
-  var PER_LEVEL = 700;
-  var level = Math.min(20, Math.floor(totalXp / PER_LEVEL) + 1);
-  var into = level === 20 ? PER_LEVEL : totalXp % PER_LEVEL;
-  $('#xpLabel').textContent = 'LVL ' + level + ' · ' + totalXp + ' XP · ' + (level === 20 ? 'level cap reached. epic boons only.' : (PER_LEVEL - into) + ' XP to next level');
+  // ---------- level = real age; the bar fills up towards the next birthday ----------
+  var BIRTH = { y: 1982, m: 12, d: 21 }; // EDIT ME if needed
+  var now = new Date();
+  var thisYearBday = new Date(now.getFullYear(), BIRTH.m - 1, BIRTH.d);
+  var last = now >= thisYearBday ? thisYearBday : new Date(now.getFullYear() - 1, BIRTH.m - 1, BIRTH.d);
+  var next = new Date(last.getFullYear() + 1, BIRTH.m - 1, BIRTH.d);
+  var level = last.getFullYear() - BIRTH.y;
+  var progress = (now - last) / (next - last);
+  var daysLeft = Math.ceil((next - now) / 86400000);
+  var isBirthday = now.getMonth() === BIRTH.m - 1 && now.getDate() === BIRTH.d;
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  $('#xpLabel').textContent = isBirthday
+    ? '🎂 LEVEL UP! LVL ' + level + ' · ' + totalXp + ' XP · roll for new hit points'
+    : 'LVL ' + level + ' · ' + totalXp + ' XP · ' + daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' to level ' + (level + 1) + ' (' + BIRTH.d + ' ' + MONTHS[BIRTH.m - 1] + ')';
   var xpFill = $('#xpFill');
+  var fillTo = (isBirthday ? 100 : Math.max(2, progress * 100)) + '%';
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries, obs) {
-      if (entries[0].isIntersecting) { xpFill.style.width = (into / PER_LEVEL * 100) + '%'; obs.disconnect(); }
+      if (entries[0].isIntersecting) {
+        xpFill.style.width = fillTo; obs.disconnect();
+        if (isBirthday) setTimeout(function () { burstFrom(xpFill); myaah(); }, 900);
+      }
     }).observe(xpFill);
-  } else { xpFill.style.width = (into / PER_LEVEL * 100) + '%'; }
+  } else { xpFill.style.width = fillTo; }
 
   document.querySelectorAll('.filters button').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -1728,6 +1742,7 @@
         'certs:   OPST · POB · MITRE ATT&amp;CK · ITIL',
         'edu:     Bachelor of ICT, Web Technology (HAN)',
         'also:    indie game developer · youtuber (5+ yrs) · D&amp;D',
+        'level:   ' + level + ' <span class="dim">(' + (isBirthday ? 'LEVEL UP TODAY! 🎂' : daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' to level ' + (level + 1)) + ')</span>',
         'alt:     <span class="ok">Smiles the Unalive</span>, chaotic neutral undead paladin',
         'motto:   Be the Butterfly.'
       ]);
