@@ -230,7 +230,7 @@
   .term {
     margin: 30px 0 30px;
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-radius: 0;
     background: var(--term-bg);
     overflow: hidden;
     font-family: 'JetBrains Mono', monospace;
@@ -240,22 +240,17 @@
   }
   .term-bar {
     display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 12px;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 12px;
     border-bottom: 1px solid var(--line);
-    background: var(--bg-raised);
     font-size: 12px;
     color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
   }
-  .term-bar i {
-    width: 11px; height: 11px; border-radius: 50%;
-    display: inline-block; background: var(--line);
-  }
-  .term-bar i:nth-child(1) { background: var(--blood); }
-  .term-bar i:nth-child(2) { background: var(--amber); }
-  .term-bar i:nth-child(3) { background: var(--brand); }
-  .term-bar span { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .term-bar .tty { color: var(--ghost); }
+  .term-bar span { overflow: hidden; text-overflow: ellipsis; }
 
   .term-out {
     padding: 14px 14px 4px;
@@ -808,7 +803,7 @@
     <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour: <code>#4a6f62</code></p>
 
     <div class="term" id="term">
-      <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>guest@4a6f62: ~ (bash)</span></div>
+      <div class="term-bar" aria-hidden="true"><span>┌─[<span class="tty">tty1</span>]─[guest@4a6f62:~]</span><span>bash</span></div>
       <div class="term-out" id="termOut" role="log" aria-live="polite" aria-label="Terminal output"></div>
       <form class="term-in" id="termForm" autocomplete="off">
         <label for="termInput">guest@4a6f62:~$</label>
