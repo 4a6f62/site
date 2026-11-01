@@ -26,6 +26,7 @@
     --brand: #4a6f62;
     --ghost: #2f7a4f;
     --focus: #1b6ea8;
+    --me-mask: url(/assets/me-dither-inv.png);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -43,6 +44,7 @@
       --brand: #6f9686;
       --ghost: #5ef08f;
       --focus: #6fc3ff;
+      --me-mask: url(/assets/me-dither.png);
     }
   }
 
@@ -60,6 +62,7 @@
     --brand: #6f9686;
     --ghost: #5ef08f;
     --focus: #6fc3ff;
+    --me-mask: url(/assets/me-dither.png);
   }
 
   * { box-sizing: border-box; }
@@ -225,6 +228,64 @@
   nav.jump a:hover,
   nav.jump a:focus-visible { border-bottom-color: var(--brand); }
   nav.jump a .n { color: var(--muted); }
+
+  /* ---------- photo ---------- */
+  .hero-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 28px;
+    align-items: start;
+  }
+  .me-wrap { margin-top: 30px; text-align: center; }
+  .me {
+    position: relative;
+    display: block;
+    width: 146px;
+    height: 146px;
+    padding: 0;
+    border: 1px solid var(--line);
+    background: var(--term-bg);
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .me:hover, .me:focus-visible { border-color: var(--ghost); }
+  .me-dither, .me img {
+    position: absolute;
+    top: 8px; left: 8px;
+    width: 128px; height: 128px;
+    transition: opacity .25s steps(4);
+  }
+  .me-dither {
+    background: var(--ghost);
+    -webkit-mask: var(--me-mask) center / 128px 128px no-repeat;
+    mask: var(--me-mask) center / 128px 128px no-repeat;
+  }
+  .me img { opacity: 0; object-fit: cover; }
+  .me::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 2px, color-mix(in srgb, var(--term-bg) 18%, transparent) 2px 3px);
+    pointer-events: none;
+  }
+  .me:hover img, .me:focus-visible img, .me[aria-pressed="true"] img { opacity: 1; }
+  .me:hover .me-dither, .me:focus-visible .me-dither, .me[aria-pressed="true"] .me-dither { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) { .me-dither, .me img { transition: none; } }
+  .me-cap {
+    display: block;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  @media (max-width: 600px) {
+    .hero-top { gap: 0 14px; }
+    .me-wrap { margin-top: 0; }
+    .me { width: 104px; height: 104px; }
+    .me-dither, .me img { top: 4px; left: 4px; width: 96px; height: 96px; }
+    .me-dither { -webkit-mask-size: 96px 96px; mask-size: 96px 96px; }
+  }
+  .ascii { white-space: pre; line-height: 1; font-size: 13px; letter-spacing: 0; overflow-x: auto; }
+  @media (max-width: 600px) { .ascii { font-size: 10.5px; } }
 
   /* ---------- interactive terminal ---------- */
   .term {
@@ -852,6 +913,8 @@
   </div>
 
   <header class="hero">
+    <div class="hero-top">
+    <div>
     <p class="prompt-line"><span class="sigil">$</span> whoami</p>
     <h1 class="handle">4a6f62<span class="cursor" aria-hidden="true"></span>
       <span class="decoded">// echo 4a6f62 | xxd -r -p → <b>Job</b></span>
@@ -859,6 +922,15 @@
     <p class="tagline">Ethical hacker. Indie game developer. YouTuber for 5+ years. Spent 20+ years building for the web, now breaking it. Also: an undead paladin with a d12 of bad ideas.</p>
     <p class="motto">// Be the Butterfly.</p>
     <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour: <code>#4a6f62</code></p>
+    </div>
+    <div class="me-wrap">
+      <button type="button" class="me" id="meBtn" aria-pressed="false" aria-label="Show the real photo of Job">
+        <span class="me-dither" aria-hidden="true"></span>
+        <img src="/assets/me.webp" alt="Photo of Job Castrop" width="320" height="320">
+      </button>
+      <span class="me-cap" id="meCap">./me.jpg</span>
+    </div>
+    </div>
 
     <div class="term" id="term">
       <div class="term-bar" aria-hidden="true"><span>┌─[<span class="tty">tty1</span>]─[guest@4a6f62:~]</span><span>bash</span></div>
@@ -1551,6 +1623,17 @@
     if (kpos === KONAMI.length) { kpos = 0; myaah(); }
   });
 
+  // ---------- photo toggle (tap on touch screens) ----------
+  var meBtn = $('#meBtn');
+  meBtn.addEventListener('click', function () {
+    var on = meBtn.getAttribute('aria-pressed') !== 'true';
+    meBtn.setAttribute('aria-pressed', String(on));
+    meBtn.setAttribute('aria-label', on ? 'Show the dithered photo of Job' : 'Show the real photo of Job');
+    $('#meCap').textContent = on ? './me.jpg --raw' : './me.jpg';
+  });
+
+  var ME_ASCII = ["", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠤⠤⠖⠲⠤⢤⣀⡀", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠋⠁⠀⠁⠄⢀⢄⢄⢄⠙⠲⡄", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠏⢀⢕⢄⢕⢵⢕⢵⢽⢽⢽⢽⢽⢥⠍⢳⡀", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠃⢑⢕⢝⢵⢝⢽⢽⢽⢽⢽⢿⢽⢽⢽⢽⢄⢳", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡏⠄⢝⢵⢝⢽⢽⢽⢽⢽⢿⢽⢿⢽⢿⢽⢿⢵⠍⡇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⢄⢝⢕⠝⠝⠝⢽⢽⢽⢿⢽⠟⠝⠝⢝⠿⢽⠅⡇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠇⢕⢝⢅⠕⢕⢕⢅⠝⢽⢽⢽⢝⠽⠝⢝⢝⢽⢕⢽", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⢕⢝⢕⢅⢅⢵⢵⢕⢽⢽⢽⢕⢕⢕⢵⢽⢽⢝⢽⡇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⢕⢝⢽⢽⢵⢽⢽⢝⢵⢽⢽⢽⢽⢿⢽⢿⢽⢝⢽⡇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⢕⠝⢝⢝⢽⠝⠅⠁⠅⠝⠅⠝⢽⢝⢽⢿⢽⢝⣽⠇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⠕⢕⢝⠅⠁⠅⠁⢄⠕⢄⠅⠄⠁⢝⢽⢽⠝⡇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⡑⠕⠝⠅⢕⢄⢅⢕⢕⢵⢵⢽⠅⢵⢽⢽⢵⠃", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢧⠀⠁⠀⠑⠅⠅⠅⠁⢅⠝⠝⠕⠅⠑⠅⣹", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡄⠀⠀⠁⠀⠁⠁⠁⠅⠁⠁⠁⠀⠁⣴⠃", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢗⠅⠀⠀⠀⠁⠀⠁⠀⠀⠀⠁⠀⢁⡇", "⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡤⠴⠚⢝⢕⠅⠅⠀⠄⠀⠀⠀⠀⠀⢄⢕⢵⢝⢽⠒⠦⣄", "⠀⠀⠀⢀⣀⡤⠴⠖⠋⠉⠅⠄⠀⠀⠙⠕⠕⢅⠅⢅⠅⢅⢕⢵⢵⢽⢽⢽⠝⠁⠀⠀⠉⠝⢒⠦⢤⣀⣀⣀", "⣠⠤⠖⠋⢕⠅⠁⠁⠁⠁⠁⠀⠁⠀⠀⠀⠁⠑⠕⢵⢕⢵⢽⢽⢽⢽⠝⠁⠀⠀⠀⠀⠁⠤⢅⠁⠁⠉⠑⢈⠙⢓⠦⢤", "⡇⠁⠁⠄⠅⠀⠑⢑⠁⠀⠁⠀⠁⠀⠁⠀⠀⠀⠀⠀⠉⠉⠉⠉⠁⠁⠀⠀⠀⠀⠁⠀⠁⠀⠀⠀⠑⠁⠁⠀⠁⠁⠁⢼", "⡗⠁⠁⠀⠁⠁⠁⠁⠀⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠁⠀⠑⠁⠁⢸", "⣇⣁⣀⣀⣁⣀⣁⣀⣀⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣁⣀⣑⣅⣑⣄⣁⣸"];
+
   // ---------- terminal ----------
   var out = $('#termOut');
   var input = $('#termInput');
@@ -1619,6 +1702,7 @@
         '  achievements    cat achievements.log',
         '  ls games        what\'s in ~/games',
         '  smiles          meet the alter ego',
+        '  cat me.jpg      the real me (ish)',
         '  quote           Smiles says something',
         '  roll [NdM]      roll dice, e.g. roll 2d6 (d20 by default)',
         '  entropy         roll on the Table of Volatile Entropy',
@@ -1665,7 +1749,7 @@
         });
         line('<span class="dim">→ all games: <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">4a6f62.itch.io</a></span>');
       } else if (target === '' || target === '.') {
-        line('<span class="vio">achievements/</span>  <span class="vio">career/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  <span class="dim">.secret</span>');
+        line('<span class="vio">achievements/</span>  <span class="vio">career/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  me.jpg  <span class="dim">.secret</span>');
       } else if (target === '-la' || target === '-a') {
         line('<span class="vio">.</span>  <span class="vio">..</span>  <span class="dim">.secret</span>  <span class="dim">.bash_history</span>  <span class="dim">.old_websites/</span>  achievements/  games/  smiles/  about.txt');
       } else {
@@ -1674,7 +1758,8 @@
     },
     cat: function (args) {
       var f = (args[0] || '').replace(/^~?\/?/, '');
-      if (f === 'about.txt') line('I break into things for a living and get chased by things in games for fun.');
+      if (f === 'me.jpg' || f === 'me.png' || f === 'me.webp') { var pre = document.createElement('div'); pre.className = 'ln ascii ok'; pre.textContent = ME_ASCII.join('\n'); out.appendChild(pre); line('<span class="dim">// the real me. hover the photo up top for the HD version.</span>'); out.scrollTop = out.scrollHeight; }
+      else if (f === 'about.txt') line('I break into things for a living and get chased by things in games for fun.');
       else if (f === 'contact.txt') COMMANDS.socials();
       else if (f === '.secret') line('<span class="ok">↑ ↑ ↓ ↓ ← → ← → b a</span>');
       else if (f === '.bash_history') lines(['nmap -sC -sV spire.local', 'hydra -l solarion -P rockyou.txt spire.local ssh', 'echo "petunias" &gt; whale.txt', 'sudo make me-a-sandwich', '<span class="dim">rm -rf /order-of-the-static-light</span>']);
