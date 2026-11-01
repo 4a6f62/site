@@ -821,7 +821,7 @@
     <h1 class="handle">4a6f62<span class="cursor" aria-hidden="true"></span>
       <span class="decoded">// echo 4a6f62 | xxd -r -p → <b>Job</b></span>
     </h1>
-    <p class="tagline">Ethical hacker by day. Retro horror Let's Plays, indie games and an undead paladin with a d12 of bad ideas by night.</p>
+    <p class="tagline">20+ years of building for the web, now breaking it. Ethical hacker by day. Retro horror Let's Plays, indie games and an undead paladin with a d12 of bad ideas by night.</p>
     <p class="motto">// Be the Butterfly.</p>
     <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour: <code>#4a6f62</code></p>
 
@@ -856,7 +856,7 @@
 
   <section id="about">
     <p class="cmd"><span class="sigil">$</span> cat about.txt</p>
-    <p class="lead">I break into things for a living and get chased by things in games for fun. By day I'm a pentester / ethical hacker at <a href="https://parell.nl" target="_blank" rel="noopener">Parell</a>, testing the security of municipalities and schools, and sometimes showing up as a "mystery guest" to see how far I can physically get into a building. I also build the tooling that makes the reporting less painful. By night: retro and indie horror Let's Plays, making games in Godot, and a homebrew D&amp;D habit that has gotten <em>completely</em> out of hand.</p>
+    <p class="lead">I break into things for a living and get chased by things in games for fun. I spent 20+ years building websites and web applications before switching sides, so I know exactly where developers cut corners, because I cut a few of them myself. By day I'm a pentester / ethical hacker at <a href="https://parell.nl" target="_blank" rel="noopener">Parell</a>, testing the security of municipalities and schools, and sometimes showing up as a "mystery guest" to see how far I can physically get into a building. I also build the tooling that makes the reporting less painful. By night: retro and indie horror Let's Plays, making games in Godot, and a homebrew D&amp;D habit that has gotten <em>completely</em> out of hand.</p>
     <p class="lead">Most of it stars the same skeleton. More on him <a href="#smiles">below</a>.</p>
   </section>
 
@@ -1219,6 +1219,9 @@
     { tag: 'dev', title: 'Automated the boring part', when: '2026',
       desc: 'Built Report Sorcadin, a multi-user pentest reporting platform for DigiD (ENSIA), OWASP ASVS 5.0 and OWASP Top 10:2025, with TOTP MFA built in.',
       rarity: 'epic' },
+    { tag: 'dev', title: 'Builder turned breaker', when: '20+ years',
+      desc: 'Two decades of web development (PHP, Symfony and plenty more) before moving into offensive security. Knowing how it\'s built is half of knowing how it breaks.',
+      rarity: 'legendary' },
     { tag: 'sec', title: 'Four years in the field', when: '2022–now',
       desc: 'Pentester / ethical hacker at <a href="https://parell.nl" target="_blank" rel="noopener">Parell</a>, testing the security of municipalities, schools and more.',
       rarity: 'epic' },
@@ -1514,6 +1517,7 @@
     whoami: function () {
       lines([
         'job (aka <span class="ok">4a6f62</span>, hex for "Job")',
+        'past:    20+ years web developer',
         'role:    pentester / ethical hacker @ <a href="https://parell.nl" target="_blank" rel="noopener">parell</a> (4 yrs)',
         'hobbies: horror Let\'s Plays, gamedev, D&amp;D',
         'alt:     <span class="ok">Smiles the Unalive</span>, chaotic neutral undead paladin',
@@ -1539,7 +1543,7 @@
       } else if (target === '' || target === '.') {
         line('<span class="vio">achievements/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  <span class="dim">.secret</span>');
       } else if (target === '-la' || target === '-a') {
-        line('<span class="vio">.</span>  <span class="vio">..</span>  <span class="dim">.secret</span>  <span class="dim">.bash_history</span>  achievements/  games/  smiles/  about.txt');
+        line('<span class="vio">.</span>  <span class="vio">..</span>  <span class="dim">.secret</span>  <span class="dim">.bash_history</span>  <span class="dim">.old_websites_2004-2022/</span>  achievements/  games/  smiles/  about.txt');
       } else {
         line('ls: cannot access \'' + esc(target) + '\': No such file or directory', 'err');
       }
