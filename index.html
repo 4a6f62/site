@@ -190,10 +190,24 @@
   .motto {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13.5px;
-    font-style: italic;
     color: var(--brand);
     margin: 0 0 26px;
+    max-width: 60ch;
   }
+  .motto summary { cursor: pointer; font-style: italic; list-style: none; width: fit-content; }
+  .motto summary::-webkit-details-marker { display: none; }
+  .motto summary .why { font-style: normal; font-size: 12px; color: var(--muted); margin-left: 6px; }
+  .motto summary:hover .why { color: var(--ghost); }
+  .motto[open] summary .why { color: var(--ghost); }
+  .motto p {
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 14.5px;
+    color: var(--muted);
+    margin: 10px 0 0;
+    padding-left: 12px;
+    border-left: 2px solid var(--violet);
+  }
+  .motto p strong, .motto p em { color: var(--fg); }
 
   .colorline {
     font-size: 13px;
@@ -709,7 +723,7 @@
   }
   .portrait img {
     width: 100%;
-    max-width: 200px;
+    max-width: 220px;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -920,7 +934,11 @@
       <span class="decoded">// echo 4a6f62 | xxd -r -p → <b>Job</b></span>
     </h1>
     <p class="tagline">Ethical hacker. Indie game developer. YouTuber for 5+ years. Spent 20+ years building for the web, now breaking it. Also: an undead paladin with a d12 of bad ideas.</p>
-    <p class="motto">// Be the Butterfly.</p>
+    <details class="motto">
+      <summary>// Be the Butterfly. <span class="why">[why?]</span></summary>
+      <p><strong>Be the Butterfly</strong> is one of the tenets of the Oath of Chaos, Smiles' homebrew paladin oath, and it's the motto I live by. It comes from the <em>butterfly effect</em> in chaos theory: a butterfly flapping its wings in Brazil can, in theory, set off a tornado in Texas. Tiny causes, huge consequences. A single strike or a small spark can overturn an empire, so embrace the unpredictable ripples of what you do.</p>
+      <p>It's also how hacking works: one forgotten test account, one unpatched plugin, one click on a phishing mail, and the whole house of cards comes down. Never underestimate the small things, and don't be afraid to <em>be</em> the small thing that changes everything. (It's also result 12 on the Table of Volatile Entropy: a harmless cloud of glowing butterflies. Try the dice below.)</p>
+    </details>
     <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour: <code>#4a6f62</code></p>
     </div>
     <div class="me-wrap">
@@ -1180,8 +1198,8 @@
 
     <div class="smiles-grid">
       <div class="portrait">
-        <img src="/assets/smiles.png" alt="Smiles: a grinning skeleton in rusted plate armour and a tattered green hood, holding a glaive, green flame in his other hand" width="227" height="550" id="smilesImg" title="poke him">
-        <div class="bubble" id="smilesQuote" aria-live="polite">"Myaaaah! I knew I heard the sound of possible disappointment clanking up my stairs!"</div>
+        <img src="/assets/smiles.webp" alt="Smiles: a grinning skeleton in rusted plate armour and a tattered green hooded cloak, hands on his hips, green flames on his shoulders" width="285" height="640" id="smilesImg" title="poke him">
+        <div class="bubble" id="smilesQuote" aria-live="polite">"Rules? Cages! And what do we do with cages, recruit? We BREAK them! MYAAH!"</div>
       </div>
 
       <div class="sheet" aria-label="Smiles character sheet">
@@ -1219,7 +1237,7 @@
 
     <div class="tenets">
       <div class="tenet"><strong>Change is the Only Constant.</strong> Stagnation is death.</div>
-      <div class="tenet"><strong>Be the Butterfly.</strong> A single spark can overturn empires.</div>
+      <div class="tenet"><strong>Be the Butterfly.</strong> A single strike or small spark can overturn empires; embrace the unpredictable ripples of your actions.</div>
       <div class="tenet"><strong>Break Every Cage.</strong> No prison, dogma or spell may bind free will.</div>
     </div>
 
@@ -1532,14 +1550,11 @@
 
   // ---------- Smiles quotes ----------
   var QUOTES = [
-    '"Myaaaah! I knew I heard the sound of possible disappointment clanking up my stairs!"',
-    '"Don\'t say ol\' Smiles never gave you anything… besides trauma and mild tinnitus."',
     '"Rules? Cages! And what do we do with cages, recruit? We BREAK them! MYAAH!"',
+    '"Don\'t say ol\' Smiles never gave you anything… besides trauma and mild tinnitus."',
     '"At least my chaos has character."',
     '"That was the plan. All of it. Especially the petunias."',
-    '"I used to be a paladin… but fabulous secret powers were revealed to me the day I picked up this mighty amulet!"',
-    '"Your firewall is very orderly. I hate it. MYAAH!"',
-    '"Penetration test? I prefer the term \'unsolicited chaos audit\'."'
+    '"I used to be a paladin… but fabulous secret powers were revealed to me the day I picked up this mighty amulet!"'
   ];
   var qi = 0;
   var smilesImg = $('#smilesImg');
@@ -1722,6 +1737,7 @@
         '  smiles          meet the alter ego',
         '  cat me.jpg      the real me (ish)',
         '  quote           Smiles says something',
+        '  butterfly       what \'Be the Butterfly\' means',
         '  roll [NdM]      roll dice, e.g. roll 2d6 (d20 by default)',
         '  entropy         roll on the Table of Volatile Entropy',
         '  hack            definitely a real hack',
@@ -1748,7 +1764,7 @@
         'also:    indie game developer · youtuber (5+ yrs) · D&amp;D',
         'level:   ' + level + ' <span class="dim">(' + (isBirthday ? 'LEVEL UP TODAY! 🎂' : daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' to level ' + (level + 1)) + ')</span>',
         'alt:     <span class="ok">Smiles the Unalive</span>, chaotic neutral undead paladin',
-        'motto:   Be the Butterfly.'
+        'motto:   Be the Butterfly. <span class="dim">(type butterfly)</span>'
       ]);
     },
     achievements: function () {
@@ -1796,6 +1812,16 @@
       goTo('smiles');
     },
     quote: function () { line('<span class="ok">smiles&gt;</span> ' + esc(nextQuote())); },
+    butterfly: function () {
+      lines([
+        '<span class="vio">🦋 man be-the-butterfly</span>',
+        'A tenet of the Oath of Chaos, and the motto I live by.',
+        'The butterfly effect: tiny causes, huge consequences. One small spark',
+        'can overturn an empire. One forgotten test account can own a domain.',
+        'Never underestimate the small things. Be the small thing.'
+      ]);
+      butterflies(window.innerWidth / 2, window.innerHeight / 2, 12);
+    },
     myaah: function () { line('<span class="ok">MYAAAAAH!</span>'); myaah(); },
     roll: function (args) {
       var spec = (args[0] || 'd20').toLowerCase();
