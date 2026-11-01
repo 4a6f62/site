@@ -532,6 +532,15 @@
   .repo .name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14.5px; }
   .repo .desc { font-size: 14px; color: var(--muted); margin-top: 4px; }
 
+  /* ---------- HTB badges ---------- */
+  .badges { margin-top: 22px; }
+  .badges .bh { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+  .badges ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 8px; }
+  .badges li { border: 1px solid var(--line); border-radius: 3px; padding: 10px 12px; font-size: 13.5px; }
+  .badges li b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ghost); }
+  .badges li span { color: var(--muted); }
+  .badges li small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
+
   /* ---------- games ---------- */
   .ls-head {
     font-family: 'JetBrains Mono', monospace;
@@ -864,12 +873,25 @@
     <p class="cmd"><span class="sigil">$</span> cd security/ &amp;&amp; ls</p>
     <div class="accent-bar"></div>
     <h2>Security work</h2>
-    <p class="lead">Web application and infrastructure pentesting, tested against frameworks like OWASP ASVS, the OWASP Top 10 and DigiD (ENSIA). Write-ups for Hack The Box challenges and OSCP-style practice labs live on GitHub.</p>
+    <p class="lead">Web application and infrastructure pentesting, tested against frameworks like OWASP ASVS, the OWASP Top 10 and DigiD (ENSIA). Currently levelling up through Hack The Box Academy. Write-ups for HTB challenges and OSCP-style practice labs live on GitHub.</p>
 
     <a class="repo" href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">
       <div class="name">4a6f62 / Write-ups</div>
       <div class="desc">Hack The Box challenges and OSCP practice lab machines. Educational notes on offensive security.</div>
     </a>
+
+
+    <div class="badges">
+      <p class="bh"><span style="color:var(--brand)">$</span> htb academy --badges · 6 unlocked</p>
+      <ul>
+        <li><b>Crude but effective</b><span>Login Brute Forcing</span><small>2026-10-29 · 1.1% of players</small></li>
+        <li><b>Enumerate &amp; Attack!</b><span>Active Directory Enumeration &amp; Attacks</span><small>2026-10-27 · 0.6% of players</small></li>
+        <li><b>Explore deep space</b><span>Pivoting, Tunneling, and Port Forwarding</span><small>2026-09-04 · 0.6% of players</small></li>
+        <li><b>Scan and execute</b><span>Attacking Common Services</span><small>2026-07-21 · 0.7% of players</small></li>
+        <li><b>Grab the keys and move laterally</b><span>Password Attacks</span><small>2026-06-02 · 0.7% of players</small></li>
+        <li><b>Ghost in the shell</b><span>Shells &amp; Payloads</span><small>2026-04-16 · 1% of players</small></li>
+      </ul>
+    </div>
 
     <div class="repo">
       <div class="name">Report Sorcadin <span class="pill">internal tool</span></div>
@@ -1108,6 +1130,24 @@
   //   { tag: 'sec', title: 'OSCP', desc: 'Offensive Security Certified Professional.', rarity: 'legendary', when: '2025' },
   //   { tag: 'sec', title: 'HTB: Pro Hacker', desc: 'Reached Pro Hacker rank on Hack The Box.', rarity: 'epic', when: '2026' },
   var ACHIEVEMENTS = [
+    { tag: 'sec', title: 'HTB Academy: Crude but effective', when: '2026-10-29', pct: '1.1',
+      desc: 'Login Brute Forcing module completed on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box Academy</a>.',
+      rarity: 'rare' },
+    { tag: 'sec', title: 'HTB Academy: Enumerate & Attack!', when: '2026-10-27', pct: '0.6',
+      desc: 'Active Directory Enumeration & Attacks module completed on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box Academy</a>.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'HTB Academy: Explore deep space', when: '2026-09-04', pct: '0.6',
+      desc: 'Pivoting, Tunneling, and Port Forwarding module completed on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box Academy</a>.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'HTB Academy: Scan and execute', when: '2026-07-21', pct: '0.7',
+      desc: 'Attacking Common Services module completed on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box Academy</a>.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'HTB Academy: Grab the keys and move laterally', when: '2026-06-02', pct: '0.7',
+      desc: 'Password Attacks module completed on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box Academy</a>.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'HTB Academy: Ghost in the shell', when: '2026-04-16', pct: '1',
+      desc: 'Shells & Payloads module completed on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box Academy</a>.',
+      rarity: 'rare' },
     { tag: 'game', title: 'Shipped: Smiles: Chaos Unbound', when: '2026',
       desc: 'Published a five-episode Godot beat \'em up on <a href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">itch.io</a>, with a synthesized chiptune score, illustrated cinematics and an automated test suite.',
       rarity: 'epic' },
@@ -1118,7 +1158,7 @@
       desc: 'Built Report Sorcadin, a multi-user pentest reporting platform for DigiD (ENSIA), OWASP ASVS 5.0 and OWASP Top 10:2025, with TOTP MFA built in.',
       rarity: 'epic' },
     { tag: 'sec', title: 'Box breaker', when: 'ongoing',
-      desc: 'Pwning machines and Pro Labs on <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">Hack The Box</a>. Challenges and OSCP practice labs are written up in public <a href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">write-ups</a>.',
+      desc: 'Hack The Box challenges and OSCP practice lab machines, written up in public <a href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">write-ups</a>.',
       rarity: 'rare' },
     { tag: 'dnd', title: 'Homebrewer', when: '2026',
       desc: 'Designed and balanced the Oath of Chaos Paladin subclass, published as a <a href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">sourcebook page</a> and 5etools JSON.',
@@ -1185,7 +1225,7 @@
       (a.when ? '<span class="unlock" style="color:var(--muted)">' + esc(a.when) + '</span>' : '') +
       '<span class="title">' + esc(a.title) + '</span></div>' +
       '<div class="desc">' + a.desc + '</div>' +
-      '<div class="rarity">rarity: <b>' + esc(a.rarity || 'common') + '</b> · +' + xp + ' XP</div>';
+      '<div class="rarity">rarity: <b>' + esc(a.rarity || 'common') + '</b>' + (a.pct ? ' · earned by ' + esc(a.pct) + '% of HTB players' : '') + ' · +' + xp + ' XP</div>';
     list.appendChild(li);
   });
 
@@ -1354,6 +1394,15 @@
     ['poultry-panic', 'prototype', 'archived']
   ];
 
+  var HTB_BADGES = [
+    ['Crude but effective', 'Login Brute Forcing', '2026-10-29'],
+    ['Enumerate &amp; Attack!', 'Active Directory Enumeration &amp; Attacks', '2026-10-27'],
+    ['Explore deep space', 'Pivoting, Tunneling, and Port Forwarding', '2026-09-04'],
+    ['Scan and execute', 'Attacking Common Services', '2026-07-21'],
+    ['Grab the keys and move laterally', 'Password Attacks', '2026-06-02'],
+    ['Ghost in the shell', 'Shells &amp; Payloads', '2026-04-16']
+  ];
+
   var COMMANDS = {
     help: function () {
       lines([
@@ -1367,6 +1416,7 @@
         '  entropy         roll on the Table of Volatile Entropy',
         '  hack            definitely a real hack',
         '  nmap            scan this site',
+        '  htb             hack the box badges',
         '  goto &lt;section&gt;  achievements|security|games|smiles|dnd|youtube|contact',
         '  theme           cycle light/dark/auto',
         '  socials         where to find me',
@@ -1508,6 +1558,11 @@
     echo: function (args) { line(esc(args.join(' '))); },
     date: function () { line(new Date().toString() + ' <span class="dim">(the weekend lasted a year and a day)</span>'); },
     vim: function () { line('You are now trapped in vim. Just like Smiles in his Spire. (:q! won\'t help here)', 'warn'); },
+    htb: function () {
+      line('<span class="warn">hack the box academy · badges</span>');
+      HTB_BADGES.forEach(function (x) { line('<span class="ok">[✓]</span> ' + x[0] + ' <span class="dim">· ' + x[1] + ' · ' + x[2] + '</span>'); });
+      line('→ <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">profile.hackthebox.com</a>');
+    },
     whale: function () { line('🐋 Oh no, not again.  <span class="dim">— a bowl of petunias</span>'); }
   };
   COMMANDS.dir = COMMANDS.ls;
