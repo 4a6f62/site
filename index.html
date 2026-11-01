@@ -1475,20 +1475,24 @@
     list.appendChild(li);
   });
 
-  // ---------- level = real age; the bar fills up towards the next birthday ----------
+  // ---------- level = real age, XP = days survived; recalculated from the visitor's clock on every load ----------
   var BIRTH = { y: 1982, m: 12, d: 21 }; // EDIT ME if needed
+  var DAY = 86400000;
   var now = new Date();
-  var thisYearBday = new Date(now.getFullYear(), BIRTH.m - 1, BIRTH.d);
-  var last = now >= thisYearBday ? thisYearBday : new Date(now.getFullYear() - 1, BIRTH.m - 1, BIRTH.d);
-  var next = new Date(last.getFullYear() + 1, BIRTH.m - 1, BIRTH.d);
-  var level = last.getFullYear() - BIRTH.y;
-  var progress = (now - last) / (next - last);
-  var daysLeft = Math.ceil((next - now) / 86400000);
-  var isBirthday = now.getMonth() === BIRTH.m - 1 && now.getDate() === BIRTH.d;
+  // calendar-date maths in UTC so daylight saving and time of day can't shift the count
+  var todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  var bdayUTC = function (y) { return Date.UTC(y, BIRTH.m - 1, BIRTH.d); };
+  var lastYear = todayUTC >= bdayUTC(now.getFullYear()) ? now.getFullYear() : now.getFullYear() - 1;
+  var level = lastYear - BIRTH.y;
+  var daysLeft = Math.round((bdayUTC(lastYear + 1) - todayUTC) / DAY);
+  var progress = (todayUTC - bdayUTC(lastYear)) / (bdayUTC(lastYear + 1) - bdayUTC(lastYear));
+  var daysAlive = Math.round((todayUTC - bdayUTC(BIRTH.y)) / DAY);
+  var isBirthday = todayUTC === bdayUTC(now.getFullYear());
   var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var xpText = daysAlive.toLocaleString('en-US') + ' XP';
   $('#xpLabel').textContent = isBirthday
-    ? '🎂 LEVEL UP! LVL ' + level + ' · ' + totalXp + ' XP · roll for new hit points'
-    : 'LVL ' + level + ' · ' + totalXp + ' XP · ' + daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' to level ' + (level + 1) + ' (' + BIRTH.d + ' ' + MONTHS[BIRTH.m - 1] + ')';
+    ? '🎂 LEVEL UP! LVL ' + level + ' · ' + xpText + ' · roll for new hit points'
+    : 'LVL ' + level + ' · ' + xpText + ' (1 per day survived) · ' + daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' to level ' + (level + 1) + ' (' + BIRTH.d + ' ' + MONTHS[BIRTH.m - 1] + ')';
   var xpFill = $('#xpFill');
   var fillTo = (isBirthday ? 100 : Math.max(2, progress * 100)) + '%';
   if ('IntersectionObserver' in window) {
