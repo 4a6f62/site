@@ -532,6 +532,19 @@
   .repo .name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14.5px; }
   .repo .desc { font-size: 14px; color: var(--muted); margin-top: 4px; }
 
+  /* ---------- career ---------- */
+  ol.career { list-style: none; margin: 0; padding: 0; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; }
+  ol.career li { display: grid; grid-template-columns: 9.5em 1fr; gap: 2px 16px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  ol.career li:last-child { border-bottom: 0; }
+  ol.career .when { color: var(--muted); font-size: 12.5px; padding-top: 1px; }
+  ol.career .role b { color: var(--fg); }
+  ol.career .role .at { color: var(--section-accent); }
+  ol.career .role p { font-family: 'Public Sans', system-ui, sans-serif; font-size: 14px; color: var(--muted); margin: 3px 0 0; }
+  ol.career li.now .when { color: var(--ghost); }
+  ol.career li.edu .role b { color: var(--violet); }
+  @media (max-width: 600px) { ol.career li { grid-template-columns: 1fr; } }
+  .skills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+
   /* ---------- certifications ---------- */
   .certs { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 8px; }
   .cert { border: 1px solid var(--line); border-left: 3px solid var(--section-accent); border-radius: 3px; padding: 10px 12px; }
@@ -852,12 +865,13 @@
 
     <nav class="jump" aria-label="Section jump links">
       <a href="#achievements"><span class="n">01</span> achievements</a>
-      <a href="#security"><span class="n">02</span> security</a>
-      <a href="#games"><span class="n">03</span> games</a>
-      <a href="#smiles"><span class="n">04</span> smiles</a>
-      <a href="#dnd"><span class="n">05</span> tabletop</a>
-      <a href="#youtube"><span class="n">06</span> youtube</a>
-      <a href="#contact"><span class="n">07</span> contact</a>
+      <a href="#career"><span class="n">02</span> career</a>
+      <a href="#security"><span class="n">03</span> security</a>
+      <a href="#games"><span class="n">04</span> games</a>
+      <a href="#smiles"><span class="n">05</span> smiles</a>
+      <a href="#dnd"><span class="n">06</span> tabletop</a>
+      <a href="#youtube"><span class="n">07</span> youtube</a>
+      <a href="#contact"><span class="n">08</span> contact</a>
     </nav>
   </header>
 
@@ -889,17 +903,54 @@
     <ol class="log" id="achList"></ol>
   </section>
 
+  <!-- ============ CAREER ============ -->
+  <section id="career" style="--section-accent: var(--brand);">
+    <p class="cmd"><span class="sigil">$</span> git log --oneline career</p>
+    <div class="accent-bar"></div>
+    <h2>Career</h2>
+    <p class="lead">Sixteen years of building web applications in PHP (and .NET, and Java, and whatever else the job needed), then a switch to the other side. These days: Ethical Hacker &amp; Security Consultant.</p>
+    <ol class="career">
+      <li class="now"><span class="when">Jul 2022 – now</span><div class="role"><b>Security Consultant</b> @ <a href="https://parell.nl" target="_blank" rel="noopener" class="at">Parell</a><p>Penetration tests, phishing simulations, controlled physical "break-ins", and forensic investigations into hacks and phishing incidents.</p></div></li>
+      <li class="now"><span class="when">Jan 2021 – now</span><div class="role"><b>Owner · YouTuber, ethical hacker</b> @ <a href="https://www.youtube.com/@4a6f62" target="_blank" rel="noopener" class="at">4a6f62</a><p>The channel, the games, and everything with a skeleton on it.</p></div></li>
+      <li class=""><span class="when">2020 – 2022</span><div class="role"><b>Developer</b> @ <span class="at">ON2IT Cybersecurity</span><p>Where the developer started drifting toward security.</p></div></li>
+      <li class=""><span class="when">2011 – 2020</span><div class="role"><b>Software Developer / E-mail marketeer</b> @ <span class="at">Onetomarket</span><p>Rich internet applications, e-mail campaigns, and keeping websites and web servers alive. Nine years.</p></div></li>
+      <li class=""><span class="when">2016 – 2019</span><div class="role"><b>Software Developer (secondments)</b> @ <span class="at">Assist iT · Lennoc B.V.</span><p>Rich internet applications, plus setting up, migrating and redesigning sites like euclaim.nl, lennoc.com and refunddesk.nl.</p></div></li>
+      <li class=""><span class="when">2009 – 2011</span><div class="role"><b>Software Developer</b> @ <span class="at">TWIMP Holding B.V.</span><p>Rich internet applications in PHP and .NET.</p></div></li>
+      <li class=""><span class="when">2008 – 2009</span><div class="role"><b>Software Developer</b> @ <span class="at">BliXem Internet Services</span><p>Rich internet applications in PHP.</p></div></li>
+      <li class=""><span class="when">2007 – 2008</span><div class="role"><b>Intern / Software Engineer</b> @ <span class="at">Linders Consultants BV</span><p>Built a planning AI for business processes, in Java.</p></div></li>
+      <li class=""><span class="when">2006 – 2007</span><div class="role"><b>PHP Programmer</b> @ <span class="at">Max.nl</span><p>Where it started: PHP, SQL, HTML and JavaScript.</p></div></li>
+    </ol>
+
+    <p class="cmd" style="margin:30px 0 8px;"><span class="sigil">$</span> cat education.txt</p>
+    <ol class="career">
+      <li class="edu"><span class="when">2023</span><div class="role"><b>Certificate, Private Investigator</b> @ <span class="at">Laudius</span></div></li>
+      <li class="edu"><span class="when">2004 – 2008</span><div class="role"><b>Bachelor of ICT, Web Technology</b> @ <span class="at">Hogeschool van Arnhem en Nijmegen (HAN)</span></div></li>
+      <li class="edu"><span class="when">2000 – 2004</span><div class="role"><b>MBO, Information Technology</b> @ <span class="at">Rijn IJssel</span></div></li>
+    </ol>
+
+    <p class="cmd" style="margin:30px 0 0;"><span class="sigil">$</span> cat skills.txt</p>
+    <div class="skills">
+      <span class="pill">pentesting</span><span class="pill">phishing simulations</span><span class="pill">physical security</span><span class="pill">forensics</span><span class="pill">PHP</span><span class="pill">Go</span><span class="pill">Python</span><span class="pill">MySQL</span><span class="pill">HTML5</span><span class="pill">CSS3</span><span class="pill">Symfony</span><span class="pill">Godot</span><span class="pill">🇳🇱 native</span><span class="pill">🇬🇧 professional</span>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn" href="https://www.linkedin.com/in/jobcastrop" target="_blank" rel="noopener">Full profile on LinkedIn</a>
+    </div>
+  </section>
+
   <!-- ============ SECURITY ============ -->
   <section id="security" style="--section-accent: var(--brand);">
     <p class="cmd"><span class="sigil">$</span> cd security/ &amp;&amp; ls</p>
     <div class="accent-bar"></div>
     <h2>Security work</h2>
-    <p class="lead">Four years of pentesting at Parell: external tests where you start with almost nothing ("it's a bit of a puzzle"), web apps and infrastructure against frameworks like OWASP ASVS, the OWASP Top 10 and DigiD (ENSIA), and the occasional physical break-in. You'll find me at CTFs like PvIB's and at OrangeCon. Currently levelling up through Hack The Box Academy. Write-ups for HTB challenges and OSCP-style practice labs live on GitHub.</p>
+    <p class="lead">Four years as a security consultant at Parell: pentests of web applications, infrastructure and internal networks (often starting with almost nothing: "it's a bit of a puzzle"), against frameworks like OWASP ASVS, the OWASP Top 10 and DigiD (ENSIA). Plus phishing simulations, controlled physical break-ins, and forensic investigations after hacks and phishing attacks. You'll find me at CTFs like PvIB's and at OrangeCon. Currently levelling up through Hack The Box Academy. Write-ups for HTB challenges and OSCP-style practice labs live on GitHub.</p>
 
     <p class="cmd" style="margin:26px 0 0;"><span class="sigil">$</span> ls /etc/certs/</p>
     <div class="certs">
       <div class="cert"><b>OPST</b><span>OSSTMM Professional Security Tester</span><small>[✓] certified · ISECOM</small></div>
-      <div class="cert"><b>Particulier Onderzoeker</b><span>Licensed private investigator (NL)</span><small>[✓] licensed · Wpbr (NL)</small></div>
+      <div class="cert"><b>Particulier Onderzoeker (POB)</b><span>Private investigator (NL)</span><small>[✓] certified · Laudius · 2023</small></div>
+      <div class="cert"><b>MITRE ATT&amp;CK</b><span>Lateral Movement</span><small>[✓] certified · MITRE ATT&amp;CK</small></div>
+      <div class="cert"><b>Symfony 4 &amp; Doctrine</b><span>Symfony 4 Level 1 · Doctrine &amp; the Database · Mastering Doctrine Relations</span><small>[✓] certified · SymfonyCasts</small></div>
       <div class="cert"><b>ITIL</b><span>IT service management</span><small>[✓] certified · AXELOS / PeopleCert</small></div>
     </div>
 
@@ -1122,6 +1173,13 @@
       <li>Avatar of Pure Anarchy at 20th level</li>
     </ul>
     <p class="lead" style="margin-top:22px;">I also run my own one-shots set in and around the Spire, in English and Dutch: <em>Attack on the Spire</em>, <em>Poultry Panic!</em>, <em>Blobby</em>, <em>Where Is Smiles?</em> and <em>Grrarrg's Day Off</em>. Side effects may include uncontrollable laughter and a sudden urge to yell "Myaah!".</p>
+    <p class="cmd" style="margin:28px 0 0;"><span class="sigil">$</span> roll20 --stats 4a6f62</p>
+    <div class="stat-row" style="margin-top:12px;">
+      <div class="stat"><span class="val">15</span><span class="lbl">games as GM</span></div>
+      <div class="stat"><span class="val">820</span><span class="lbl">hours played</span></div>
+      <div class="stat"><span class="val">2018</span><span class="lbl">Roll20 Pro member since</span></div>
+    </div>
+    <p class="lead" style="margin-top:16px; font-size:15px; color:var(--muted);">Happy to play D&amp;D 5e, 4e, 3.5 and Cypher System games (Numenera, The Strange). My Roll20 bio is, naturally, written by Smiles.</p>
     <div class="btn-row">
       <a class="btn" href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">Read the subclass</a>
       <a class="btn" href="https://github.com/4a6f62/homebrew" target="_blank" rel="noopener">5etools JSON</a>
@@ -1242,17 +1300,23 @@
     { tag: 'sec', title: 'Certified: OPST', when: 'cert',
       desc: 'OSSTMM Professional Security Tester (ISECOM). Hands-on exam in the OSSTMM methodology: proving you can actually test, not just tick boxes.',
       rarity: 'legendary' },
-    { tag: 'sec', title: 'Certified: Particulier Onderzoeker', when: 'cert',
-      desc: 'Licensed private investigator (NL) (Wpbr). Dutch licensed private investigator. Yes, really. Handy for OSINT and for the mystery-guest jobs.',
+    { tag: 'sec', title: 'Certified: Particulier Onderzoeker', when: '2023',
+      desc: 'Certified Dutch private investigator (POB), Laudius, 2023. Yes, really. Handy for OSINT, forensics and the mystery-guest jobs.',
       rarity: 'epic' },
     { tag: 'sec', title: 'Certified: ITIL', when: 'cert',
       desc: 'IT service management (AXELOS / PeopleCert). The framework for how IT is supposed to run. Useful for knowing exactly where it doesn\'t.',
       rarity: 'uncommon' },
-    { tag: 'dev', title: 'Builder turned breaker', when: '20+ years',
-      desc: 'Two decades of web development (PHP, Symfony and plenty more) before moving into offensive security. Knowing how it\'s built is half of knowing how it breaks.',
+    { tag: 'dev', title: 'Builder turned breaker', when: '2006–now',
+      desc: 'Twenty years since my first job as a PHP programmer, sixteen of them spent building web applications in PHP, .NET and Java, before moving into offensive security. Knowing how it\'s built is half of knowing how it breaks.',
       rarity: 'legendary' },
-    { tag: 'sec', title: 'Four years in the field', when: '2022–now',
-      desc: 'Pentester / ethical hacker at <a href="https://parell.nl" target="_blank" rel="noopener">Parell</a>, testing the security of municipalities, schools and more.',
+    { tag: 'sec', title: 'Four years in the field', when: 'Jul 2022–now',
+      desc: 'Security consultant at <a href="https://parell.nl" target="_blank" rel="noopener">Parell</a>, testing the security of municipalities, schools and more.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'Gone phishing', when: 'ongoing',
+      desc: 'Runs phishing simulations to see who clicks. Spoiler: someone always clicks.',
+      rarity: 'rare' },
+    { tag: 'sec', title: 'Digital detective', when: 'ongoing',
+      desc: 'Forensic investigations into real incidents like hacks and phishing attacks. The private investigator certificate comes in handy.',
       rarity: 'epic' },
     { tag: 'sec', title: 'Mystery guest', when: 'ongoing',
       desc: 'Physical intrusion tests: walking into organisations to see how far I get. (With permission. Always with permission.)',
@@ -1263,15 +1327,21 @@
     { tag: 'sec', title: 'Published: distrust the USB stick', when: '2023',
       desc: 'Wrote a <a href="https://parell.nl/usb-stick-wantrouwen-informatiebeveiliging/" target="_blank" rel="noopener">blog for Parell</a> on how a Hak5 Rubber Ducky attack works and how to defend against it.',
       rarity: 'rare' },
+    { tag: 'dev', title: 'Published: e-mail marketing', when: 'blog',
+      desc: 'Wrote "Het stoffige imago van e-mail marketing" (the dusty image of e-mail marketing), a souvenir of nine years as developer and e-mail marketeer.',
+      rarity: 'uncommon' },
+    { tag: 'dev', title: 'Bachelor of ICT', when: '2008',
+      desc: 'Graduated in ICT, Web Technology at the Hogeschool van Arnhem en Nijmegen, after an internship building a planning AI in Java.',
+      rarity: 'rare' },
     { tag: 'sec', title: 'Box breaker', when: 'ongoing',
       desc: 'Hack The Box challenges and OSCP practice lab machines, written up in public <a href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">write-ups</a>.',
       rarity: 'rare' },
     { tag: 'dnd', title: 'Homebrewer', when: '2026',
       desc: 'Designed and balanced the Oath of Chaos Paladin subclass, published as a <a href="https://4a6f62.github.io/homebrew/" target="_blank" rel="noopener">sourcebook page</a> and 5etools JSON.',
       rarity: 'rare' },
-    { tag: 'dnd', title: 'Dungeon Master', when: 'ongoing',
-      desc: 'Wrote and ran a bilingual (EN/NL) series of one-shots set around the Grinning Spire.',
-      rarity: 'uncommon' },
+    { tag: 'dnd', title: 'Dungeon Master', when: 'Roll20 Pro',
+      desc: 'GM of 15 games and 820 hours played on <a href="https://app.roll20.net/users/2871850/4a6f62" target="_blank" rel="noopener">Roll20</a>, plus a bilingual (EN/NL) series of one-shots set around the Grinning Spire.',
+      rarity: 'epic' },
     { tag: 'game', title: 'Seven on the shelf', when: '2026',
       desc: 'Seven games published on <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">itch.io</a>: platformers, text adventures, a point-and-click, a beat \'em up and a Halloween horror climb.',
       rarity: 'epic' },
@@ -1284,8 +1354,8 @@
     { tag: 'sec', title: 'Crypto-curious', when: '2020',
       desc: 'Worked through the Cryptopals crypto challenges in Python.',
       rarity: 'uncommon' },
-    { tag: 'game', title: 'Five years of screams', when: '5+ years',
-      desc: 'Running the <a href="https://www.youtube.com/@4a6f62" target="_blank" rel="noopener">YouTube channel</a> for 5+ years: retro and indie horror Let\'s Plays, plus hacking videos.',
+    { tag: 'game', title: 'Five years of screams', when: 'since 2021',
+      desc: 'Running the <a href="https://www.youtube.com/@4a6f62" target="_blank" rel="noopener">YouTube channel</a> since January 2021: retro and indie horror Let\'s Plays, plus hacking videos.',
       rarity: 'epic' },
     { tag: 'game', title: 'Indie game developer', when: 'since 2004',
       desc: 'Writing and shipping my own games, from 2004 platformers to Godot beat \'em ups. Seven out on <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">itch.io</a>, more in the forge.',
@@ -1518,6 +1588,18 @@
     ['.wip/grinning-spire-mod', 'minecraft mod', 'in the forge']
   ];
 
+  var CAREER = [
+    ['Jul 2022 – now', 'Security Consultant', 'Parell'],
+    ['Jan 2021 – now', 'Owner · YouTuber, ethical hacker', '4a6f62'],
+    ['2020 – 2022', 'Developer', 'ON2IT Cybersecurity'],
+    ['2011 – 2020', 'Software Developer / E-mail marketeer', 'Onetomarket'],
+    ['2016 – 2019', 'Software Developer (secondments)', 'Assist iT · Lennoc B.V.'],
+    ['2009 – 2011', 'Software Developer', 'TWIMP Holding B.V.'],
+    ['2008 – 2009', 'Software Developer', 'BliXem Internet Services'],
+    ['2007 – 2008', 'Intern / Software Engineer', 'Linders Consultants BV'],
+    ['2006 – 2007', 'PHP Programmer', 'Max.nl']
+  ];
+
   var HTB_BADGES = [
     ['Crude but effective', 'Login Brute Forcing', '2026-10-29'],
     ['Enumerate &amp; Attack!', 'Active Directory Enumeration &amp; Attacks', '2026-10-27'],
@@ -1540,10 +1622,12 @@
         '  entropy         roll on the Table of Volatile Entropy',
         '  hack            definitely a real hack',
         '  nmap            scan this site',
+        '  career          git log --oneline career',
         '  certs           certifications',
+        '  roll20          tabletop stats',
         '  htb             hack the box badges',
         '  press           where I\'ve been written up',
-        '  goto &lt;section&gt;  achievements|security|games|smiles|dnd|youtube|contact',
+        '  goto &lt;section&gt;  achievements|career|security|games|smiles|dnd|youtube|contact',
         '  theme           cycle light/dark/auto',
         '  socials         where to find me',
         '  clear           clear the screen',
@@ -1553,9 +1637,10 @@
     whoami: function () {
       lines([
         'job (aka <span class="ok">4a6f62</span>, hex for "Job")',
-        'past:    20+ years web developer',
-        'certs:   OPST · Particulier Onderzoeker · ITIL',
-        'role:    pentester / ethical hacker @ <a href="https://parell.nl" target="_blank" rel="noopener">parell</a> (4 yrs)',
+        'role:    Ethical Hacker &amp; Security Consultant @ <a href="https://parell.nl" target="_blank" rel="noopener">parell</a> (since 2022)',
+        'past:    20 years web developer (PHP since 2006)',
+        'certs:   OPST · POB · MITRE ATT&amp;CK · ITIL',
+        'edu:     Bachelor of ICT, Web Technology (HAN)',
         'also:    indie game developer · youtuber (5+ yrs) · D&amp;D',
         'alt:     <span class="ok">Smiles the Unalive</span>, chaotic neutral undead paladin',
         'motto:   Be the Butterfly.'
@@ -1578,7 +1663,7 @@
         });
         line('<span class="dim">→ all games: <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">4a6f62.itch.io</a></span>');
       } else if (target === '' || target === '.') {
-        line('<span class="vio">achievements/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  <span class="dim">.secret</span>');
+        line('<span class="vio">achievements/</span>  <span class="vio">career/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  <span class="dim">.secret</span>');
       } else if (target === '-la' || target === '-a') {
         line('<span class="vio">.</span>  <span class="vio">..</span>  <span class="dim">.secret</span>  <span class="dim">.bash_history</span>  <span class="dim">.old_websites/</span>  achievements/  games/  smiles/  about.txt');
       } else {
@@ -1660,7 +1745,7 @@
     },
     rm: function () { line('rm: permission denied. The Spire repairs itself anyway.', 'err'); },
     goto: function (args) {
-      var map = { achievements: 'achievements', security: 'security', games: 'games', smiles: 'smiles', dnd: 'dnd', tabletop: 'dnd', youtube: 'youtube', contact: 'contact', about: 'about' };
+      var map = { achievements: 'achievements', career: 'career', cv: 'career', security: 'security', games: 'games', smiles: 'smiles', dnd: 'dnd', tabletop: 'dnd', youtube: 'youtube', contact: 'contact', about: 'about' };
       var id = map[(args[0] || '').toLowerCase()];
       if (id) { line('→ ' + id, 'dim'); goTo(id); } else line('goto: unknown section. try: ' + Object.keys(map).join(', '), 'err');
     },
@@ -1692,9 +1777,16 @@
       HTB_BADGES.forEach(function (x) { line('<span class="ok">[✓]</span> ' + x[0] + ' <span class="dim">· ' + x[1] + ' · ' + x[2] + '</span>'); });
       line('→ <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">profile.hackthebox.com</a>');
     },
+    career: function () {
+      lines(CAREER.map(function (c) { return '<span class="warn">' + c[0] + '</span>  ' + c[1] + ' <span class="dim">@ ' + c[2] + '</span>'; }));
+      line('<span class="dim">→ goto career</span>');
+    },
+    roll20: function () {
+      lines(['<span class="warn">roll20 --stats 4a6f62</span>', 'Pro member since 2018 · GM of 15 games · 820 hours played', 'plays: D&amp;D 5e · 4e · 3.5 · Cypher System', '<span class="dim">bio: "I go by Smiles, for obvious reasons…" MYAAH!</span>', '→ <a href="https://app.roll20.net/users/2871850/4a6f62" target="_blank" rel="noopener">app.roll20.net/users/2871850/4a6f62</a>']);
+    },
     certs: function () {
       line('<span class="warn">ls /etc/certs/</span>');
-      lines(['<span class="ok">[✓]</span> OPST <span class="dim">· OSSTMM Professional Security Tester</span>', '<span class="ok">[✓]</span> Particulier Onderzoeker <span class="dim">· Licensed private investigator (NL)</span>', '<span class="ok">[✓]</span> ITIL <span class="dim">· IT service management</span>']);
+      lines(['<span class="ok">[✓]</span> OPST <span class="dim">· OSSTMM Professional Security Tester</span>', '<span class="ok">[✓]</span> Particulier Onderzoeker (POB) <span class="dim">· Private investigator (NL), 2023</span>', '<span class="ok">[✓]</span> MITRE ATT&amp;CK <span class="dim">· Lateral Movement</span>', '<span class="ok">[✓]</span> Symfony 4 &amp; Doctrine <span class="dim">· SymfonyCasts</span>', '<span class="ok">[✓]</span> ITIL <span class="dim">· IT service management</span>']);
     },
     press: function () {
       lines([
