@@ -208,6 +208,16 @@
     border-left: 2px solid var(--violet);
   }
   .motto p strong, .motto p em { color: var(--fg); }
+  .motto .epigraph {
+    margin: 12px 0 0;
+    padding-left: 12px;
+    border-left: 2px solid var(--ghost);
+    font-family: 'JetBrains Mono', monospace;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fg);
+  }
 
   .colorline {
     font-size: 13px;
@@ -936,8 +946,9 @@
     <p class="tagline">Ethical hacker. Indie game developer. YouTuber for 5+ years. Spent 20+ years building for the web, now breaking it. Also: an undead paladin with a d12 of bad ideas.</p>
     <details class="motto">
       <summary>// Be the Butterfly. <span class="why">[why?]</span></summary>
-      <p><strong>Be the Butterfly</strong> is one of the tenets of the Oath of Chaos, Smiles' homebrew paladin oath, and it's the motto I live by. It comes from the <em>butterfly effect</em> in chaos theory: a butterfly flapping its wings in Brazil can, in theory, set off a tornado in Texas. Tiny causes, huge consequences. A single strike or a small spark can overturn an empire, so embrace the unpredictable ripples of what you do.</p>
-      <p>It's also how hacking works: one forgotten test account, one unpatched plugin, one click on a phishing mail, and the whole house of cards comes down. Never underestimate the small things, and don't be afraid to <em>be</em> the small thing that changes everything. (It's also result 12 on the Table of Volatile Entropy: a harmless cloud of glowing butterflies. Try the dice below.)</p>
+      <blockquote class="epigraph">"Order is a sandcastle; entropy is the tide. And even the flap of a butterfly&rsquo;s wings can topple an empire."</blockquote>
+      <p><strong>Be the Butterfly</strong> is a tenet of the Oath of Chaos, Smiles' homebrew paladin oath, and the motto I live by. It's the <em>butterfly effect</em>: in a chaotic system, the smallest nudge ripples outward until it changes everything. Every empire, every fortress, every carefully ordered system is quietly losing its fight with entropy. It only needs one wingbeat.</p>
+      <p>That's hacking, too. One forgotten test account, one unpatched plugin, one click on a phishing mail, and the whole house of cards comes down. So never underestimate the small things, and don't be afraid to <em>be</em> the small thing. (It's also result 12 on the Table of Volatile Entropy: a cloud of glowing butterflies. Try the dice below.)</p>
     </details>
     <p class="colorline mono"><span class="swatch" aria-hidden="true"></span>also renders as a colour: <code>#4a6f62</code></p>
     </div>
@@ -1237,7 +1248,7 @@
 
     <div class="tenets">
       <div class="tenet"><strong>Change is the Only Constant.</strong> Stagnation is death.</div>
-      <div class="tenet"><strong>Be the Butterfly.</strong> A single strike or small spark can overturn empires; embrace the unpredictable ripples of your actions.</div>
+      <div class="tenet"><strong>Be the Butterfly.</strong> Even the flap of a butterfly&rsquo;s wings can topple an empire.</div>
       <div class="tenet"><strong>Break Every Cage.</strong> No prison, dogma or spell may bind free will.</div>
     </div>
 
@@ -1815,10 +1826,11 @@
     butterfly: function () {
       lines([
         '<span class="vio">🦋 man be-the-butterfly</span>',
+        '<em>Order is a sandcastle; entropy is the tide.</em>',
+        '<em>And even the flap of a butterfly\'s wings can topple an empire.</em>',
+        '',
         'A tenet of the Oath of Chaos, and the motto I live by.',
-        'The butterfly effect: tiny causes, huge consequences. One small spark',
-        'can overturn an empire. One forgotten test account can own a domain.',
-        'Never underestimate the small things. Be the small thing.'
+        'One forgotten test account can own a domain. Be the small thing.'
       ]);
       butterflies(window.innerWidth / 2, window.innerHeight / 2, 12);
     },
