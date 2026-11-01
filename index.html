@@ -532,6 +532,13 @@
   .repo .name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14.5px; }
   .repo .desc { font-size: 14px; color: var(--muted); margin-top: 4px; }
 
+  /* ---------- certifications ---------- */
+  .certs { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 8px; }
+  .cert { border: 1px solid var(--line); border-left: 3px solid var(--section-accent); border-radius: 3px; padding: 10px 12px; }
+  .cert b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 14px; }
+  .cert span { display: block; font-size: 13.5px; color: var(--muted); }
+  .cert small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ghost); margin-top: 4px; }
+
   /* ---------- HTB badges ---------- */
   .badges { margin-top: 22px; }
   .badges .bh { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); margin: 0 0 10px; }
@@ -889,6 +896,13 @@
     <h2>Security work</h2>
     <p class="lead">Four years of pentesting at Parell: external tests where you start with almost nothing ("it's a bit of a puzzle"), web apps and infrastructure against frameworks like OWASP ASVS, the OWASP Top 10 and DigiD (ENSIA), and the occasional physical break-in. You'll find me at CTFs like PvIB's and at OrangeCon. Currently levelling up through Hack The Box Academy. Write-ups for HTB challenges and OSCP-style practice labs live on GitHub.</p>
 
+    <p class="cmd" style="margin:26px 0 0;"><span class="sigil">$</span> ls /etc/certs/</p>
+    <div class="certs">
+      <div class="cert"><b>OPST</b><span>OSSTMM Professional Security Tester</span><small>[✓] certified · ISECOM</small></div>
+      <div class="cert"><b>Particulier Onderzoeker</b><span>Licensed private investigator (NL)</span><small>[✓] licensed · Wpbr (NL)</small></div>
+      <div class="cert"><b>ITIL</b><span>IT service management</span><small>[✓] certified · AXELOS / PeopleCert</small></div>
+    </div>
+
     <a class="repo" href="https://github.com/4a6f62/Write-ups" target="_blank" rel="noopener">
       <div class="name">4a6f62 / Write-ups</div>
       <div class="desc">Hack The Box challenges and OSCP practice lab machines. Educational notes on offensive security.</div>
@@ -1223,6 +1237,15 @@
     { tag: 'dev', title: 'Automated the boring part', when: '2026',
       desc: 'Built Report Sorcadin, a multi-user pentest reporting platform for DigiD (ENSIA), OWASP ASVS 5.0 and OWASP Top 10:2025, with TOTP MFA built in.',
       rarity: 'epic' },
+    { tag: 'sec', title: 'Certified: OPST', when: 'cert',
+      desc: 'OSSTMM Professional Security Tester (ISECOM). Hands-on exam in the OSSTMM methodology: proving you can actually test, not just tick boxes.',
+      rarity: 'legendary' },
+    { tag: 'sec', title: 'Certified: Particulier Onderzoeker', when: 'cert',
+      desc: 'Licensed private investigator (NL) (Wpbr). Dutch licensed private investigator. Yes, really. Handy for OSINT and for the mystery-guest jobs.',
+      rarity: 'epic' },
+    { tag: 'sec', title: 'Certified: ITIL', when: 'cert',
+      desc: 'IT service management (AXELOS / PeopleCert). The framework for how IT is supposed to run. Useful for knowing exactly where it doesn\'t.',
+      rarity: 'uncommon' },
     { tag: 'dev', title: 'Builder turned breaker', when: '20+ years',
       desc: 'Two decades of web development (PHP, Symfony and plenty more) before moving into offensive security. Knowing how it\'s built is half of knowing how it breaks.',
       rarity: 'legendary' },
@@ -1515,6 +1538,7 @@
         '  entropy         roll on the Table of Volatile Entropy',
         '  hack            definitely a real hack',
         '  nmap            scan this site',
+        '  certs           certifications',
         '  htb             hack the box badges',
         '  press           where I\'ve been written up',
         '  goto &lt;section&gt;  achievements|security|games|smiles|dnd|youtube|contact',
@@ -1528,6 +1552,7 @@
       lines([
         'job (aka <span class="ok">4a6f62</span>, hex for "Job")',
         'past:    20+ years web developer',
+        'certs:   OPST · Particulier Onderzoeker · ITIL',
         'role:    pentester / ethical hacker @ <a href="https://parell.nl" target="_blank" rel="noopener">parell</a> (4 yrs)',
         'also:    indie game developer · youtuber (5+ yrs) · D&amp;D',
         'alt:     <span class="ok">Smiles the Unalive</span>, chaotic neutral undead paladin',
@@ -1663,6 +1688,10 @@
       line('<span class="warn">hack the box academy · badges</span>');
       HTB_BADGES.forEach(function (x) { line('<span class="ok">[✓]</span> ' + x[0] + ' <span class="dim">· ' + x[1] + ' · ' + x[2] + '</span>'); });
       line('→ <a href="https://profile.hackthebox.com/profile/019cece7-5abf-731a-9969-f060c87142cb" target="_blank" rel="noopener">profile.hackthebox.com</a>');
+    },
+    certs: function () {
+      line('<span class="warn">ls /etc/certs/</span>');
+      lines(['<span class="ok">[✓]</span> OPST <span class="dim">· OSSTMM Professional Security Tester</span>', '<span class="ok">[✓]</span> Particulier Onderzoeker <span class="dim">· Licensed private investigator (NL)</span>', '<span class="ok">[✓]</span> ITIL <span class="dim">· IT service management</span>']);
     },
     press: function () {
       lines([
