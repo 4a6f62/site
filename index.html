@@ -536,7 +536,8 @@
   .badges { margin-top: 22px; }
   .badges .bh { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); margin: 0 0 10px; }
   .badges ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 8px; }
-  .badges li { border: 1px solid var(--line); border-radius: 3px; padding: 10px 12px; font-size: 13.5px; }
+  .badges li { border: 1px solid var(--line); border-radius: 3px; padding: 10px 12px; font-size: 13.5px; display: grid; grid-template-columns: 48px 1fr; gap: 0 12px; align-items: center; }
+  .badges li img { grid-row: span 3; width: 48px; height: 48px; }
   .badges li b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ghost); }
   .badges li span { color: var(--muted); }
   .badges li small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
@@ -567,6 +568,19 @@
   .game:hover { border-color: var(--section-accent); transform: translateY(-2px); }
   @media (prefers-reduced-motion: reduce) { .game:hover { transform: none; } }
   .game.featured { grid-column: 1 / -1; border-color: var(--section-accent); }
+  .game .cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 315 / 250;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    margin-bottom: 4px;
+    background: var(--bg-raised);
+  }
+  .game.featured { display: grid; grid-template-columns: minmax(0, 300px) 1fr; gap: 8px 20px; align-items: start; }
+  .game.featured .cover { grid-row: span 7; margin: 0; }
+  @media (max-width: 600px) { .game.featured { display: flex; } }
   .game .perm { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted); }
   .game h3 { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; margin: 0; }
   .game .genre { font-size: 13px; color: var(--section-accent); font-family: 'JetBrains Mono', monospace; }
@@ -884,12 +898,12 @@
     <div class="badges">
       <p class="bh"><span style="color:var(--brand)">$</span> htb academy --badges · 6 unlocked</p>
       <ul>
-        <li><b>Crude but effective</b><span>Login Brute Forcing</span><small>2026-10-29 · 1.1% of players</small></li>
-        <li><b>Enumerate &amp; Attack!</b><span>Active Directory Enumeration &amp; Attacks</span><small>2026-10-27 · 0.6% of players</small></li>
-        <li><b>Explore deep space</b><span>Pivoting, Tunneling, and Port Forwarding</span><small>2026-09-04 · 0.6% of players</small></li>
-        <li><b>Scan and execute</b><span>Attacking Common Services</span><small>2026-07-21 · 0.7% of players</small></li>
-        <li><b>Grab the keys and move laterally</b><span>Password Attacks</span><small>2026-06-02 · 0.7% of players</small></li>
-        <li><b>Ghost in the shell</b><span>Shells &amp; Payloads</span><small>2026-04-16 · 1% of players</small></li>
+        <li><img src="/assets/htb/crude-but-effective.png" alt="" width="48" height="48" loading="lazy"><b>Crude but effective</b><span>Login Brute Forcing</span><small>2026-10-29 · 1.1% of players</small></li>
+        <li><img src="/assets/htb/enumerate-and-attack.png" alt="" width="48" height="48" loading="lazy"><b>Enumerate &amp; Attack!</b><span>Active Directory Enumeration &amp; Attacks</span><small>2026-10-27 · 0.6% of players</small></li>
+        <li><img src="/assets/htb/explore-deep-space.png" alt="" width="48" height="48" loading="lazy"><b>Explore deep space</b><span>Pivoting, Tunneling, and Port Forwarding</span><small>2026-09-04 · 0.6% of players</small></li>
+        <li><img src="/assets/htb/scan-and-execute.png" alt="" width="48" height="48" loading="lazy"><b>Scan and execute</b><span>Attacking Common Services</span><small>2026-07-21 · 0.7% of players</small></li>
+        <li><img src="/assets/htb/grab-the-keys-and-move-laterally.png" alt="" width="48" height="48" loading="lazy"><b>Grab the keys and move laterally</b><span>Password Attacks</span><small>2026-06-02 · 0.7% of players</small></li>
+        <li><img src="/assets/htb/ghost-in-the-shell.png" alt="" width="48" height="48" loading="lazy"><b>Ghost in the shell</b><span>Shells &amp; Payloads</span><small>2026-04-16 · 1% of players</small></li>
       </ul>
     </div>
 
@@ -910,63 +924,70 @@
     <p class="cmd"><span class="sigil">$</span> ls -la ~/games/</p>
     <div class="accent-bar"></div>
     <h2>Games</h2>
-    <p class="lead">Seven games out on itch.io so far, from the early Shifter platformers to Smiles' Godot era. A few more are still in the forge.</p>
+    <p class="lead">Seven games out on itch.io so far, from the Shifter platformers I made back in 2004 to Smiles' Godot era. A few more are still in the forge.</p>
     <p class="ls-head" aria-hidden="true">total <span id="gameCount">7</span> on itch.io · drwxr-xr-x smiles chaos</p>
 
     <div class="games">
       <article class="game featured">
+        <img class="cover" src="/assets/games/chaos-unbound.png" alt="Smiles: Chaos Unbound cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  smiles-chaos-unbound/</span>
         <h3>Smiles: Chaos Unbound</h3>
         <span class="genre">side-scrolling beat 'em up · Godot 4</span>
         <p>Smiles takes his glaive on an episodic rampage: Poultry Panic! (ending in Chicken Zilla and its nuclear breath), Swamp Sabbat's Hezrou metal band, the frozen realm of Nia-Nar to rescue Blobby the smile cube, and the Chickenesis Lab. Glaive combos, a chaos smite that goes volatile 1 time in 12, an invulnerable leap, and an illustrated cinematic at the start and end of every episode.</p>
-        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">windows</span><span class="pill">linux</span><span class="pill">macos</span></div>
+        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">browser</span><span class="pill">windows</span><span class="pill">linux</span><span class="pill">macos</span></div>
         <a class="btn" href="https://4a6f62.itch.io/smiles-chaos-unbound" target="_blank" rel="noopener">▶ Play on itch.io</a>
       </article>
       <article class="game">
+        <img class="cover" src="/assets/games/climb-the-spire.png" alt="Climb the Spire cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  the-grinning-spire/</span>
         <h3>Climb the Spire</h3>
-        <span class="genre">halloween horror · new</span>
-        <p><em>He is dying to meet you.</em> A short Halloween horror climb up the Grinning Spire. Guess who's waiting at the top.</p>
-        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">linux</span></div>
-        <a class="btn" href="https://4a6f62.itch.io/the-grinning-spire" target="_blank" rel="noopener">▶ Get it on itch.io</a>
+        <span class="genre">first-person horror · Godot · new</span>
+        <p><em>He is dying to meet you.</em> Race to the top of the Spire for a wonderful prize from your host. Nine stairwells, eight floors, and on every floor one of the household is waiting with a rule. Learn it, or start again.</p>
+        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">browser</span><span class="pill">linux</span></div>
+        <a class="btn" href="https://4a6f62.itch.io/the-grinning-spire" target="_blank" rel="noopener">▶ Play in browser</a>
       </article>
       <article class="game">
+        <img class="cover" src="/assets/games/bonkey.png" alt="Return to Bonkey Island cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  return-to-bonkey-island/</span>
         <h3>Return to Bonkey Island: a whale of a weekend</h3>
-        <span class="genre">point-and-click · Godot 4</span>
-        <p>A papercut pirate adventure with 9 verbs: insult sword fighting, a Sass-Off, a Giant Head that only laughs at pratfalls, and a bottle of DO NOT. Answers what happened during the weekend that lasted a year and a day. There was a whale.</p>
-        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">windows</span><span class="pill">linux</span></div>
+        <span class="genre">point-and-click · Godot 4 · prototype</span>
+        <p>A classic nine-verb pirate adventure, played as a puppet show of pencil-drawn paper puppets on sticks, with the scenery changed by real skeleton hands. Insult sword fighting, an inventory full of nonsense, and the truth about the weekend that lasted a year and a day. There was a whale.</p>
+        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">browser</span><span class="pill">windows</span><span class="pill">linux</span></div>
         <a class="btn" href="https://4a6f62.itch.io/return-to-bonkey-island" target="_blank" rel="noopener">▶ Get it on itch.io</a>
       </article>
       <article class="game">
+        <img class="cover" src="/assets/games/basement.png" alt="Escape the Basement of Madness cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  escape-the-basement-of-madness/</span>
         <h3>Escape the Basement of Madness</h3>
-        <span class="genre">text adventure · playable demo</span>
+        <span class="genre">text adventure · Unity · playable demo</span>
         <p>Wake up in a control room under a ruined sanctuary. Look, take, use, <code>hack</code>. Every death moves you into a slightly different world, and the screen-headed corpses in the dark look more familiar each time. Who was 5P3CT3R?</p>
-        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">windows</span><span class="pill">linux</span><span class="pill">macos</span></div>
+        <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">browser</span><span class="pill">windows</span><span class="pill">linux</span><span class="pill">macos</span></div>
         <a class="btn" href="https://4a6f62.itch.io/escape-the-basement-of-madness" target="_blank" rel="noopener">▶ Get it on itch.io</a>
       </article>
       <article class="game">
+        <img class="cover" src="/assets/games/shifter-2.png" alt="Shifter 2 cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  shifter-2/</span>
         <h3>Shifter 2</h3>
-        <span class="genre">platformer</span>
-        <p>The sequel. Shifter is back, and the world still wants him dead.</p>
+        <span class="genre">platformer · 2004</span>
+        <p>My second game ever, made back in 2004. Collect coins, kill enemies, find the exit. Comes with a level loader, a screenshot key and a fmod.dll you must not forget to unzip.</p>
         <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">windows</span></div>
         <a class="btn" href="https://4a6f62.itch.io/shifter-2" target="_blank" rel="noopener">▶ Get it on itch.io</a>
       </article>
       <article class="game">
+        <img class="cover" src="/assets/games/shifter.png" alt="Shifter: The Game cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  shifter-the-game/</span>
         <h3>Shifter: The Game</h3>
-        <span class="genre">platformer</span>
-        <p>Shifter finds himself trapped in a strange world where everything is trying to kill him. Where it all started.</p>
+        <span class="genre">platformer · where it all started</span>
+        <p>Shifter finds himself trapped in a strange world where everything is trying to kill him. How did he get there? Kill all the monsters to find out. My very first game.</p>
         <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">windows</span></div>
         <a class="btn" href="https://4a6f62.itch.io/shifter-the-game" target="_blank" rel="noopener">▶ Get it on itch.io</a>
       </article>
       <article class="game">
+        <img class="cover" src="/assets/games/tb4a.png" alt="TB4A cover art" width="315" height="250" loading="lazy">
         <span class="perm" aria-hidden="true">-rwxr-xr-x  tb4a/</span>
         <h3>TB4A</h3>
-        <span class="genre">text adventure</span>
-        <p>A text-based adventure by 4A, written in C#. Old-school parser, old-school pain.</p>
+        <span class="genre">horror text adventure · Unity</span>
+        <p>Made to celebrate hitting 600 subscribers on the YouTube channel. A short text-based horror. Tip: <code>look</code> for hints.</p>
         <div class="meta"><span class="pill live">● on itch.io</span><span class="pill">windows</span></div>
         <a class="btn" href="https://4a6f62.itch.io/tb4a" target="_blank" rel="noopener">▶ Get it on itch.io</a>
       </article>
@@ -1196,17 +1217,20 @@
       desc: 'Seven games published on <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">itch.io</a>: platformers, text adventures, a point-and-click, a beat \'em up and a Halloween horror climb.',
       rarity: 'epic' },
     { tag: 'game', title: 'Spooky season', when: '2026',
-      desc: 'Shipped <a href="https://4a6f62.itch.io/the-grinning-spire" target="_blank" rel="noopener">Climb the Spire</a>, a short horror climb, just in time for Halloween.',
+      desc: 'Shipped <a href="https://4a6f62.itch.io/the-grinning-spire" target="_blank" rel="noopener">Climb the Spire</a>, a first-person horror climb playable in the browser, just in time for Halloween.',
       rarity: 'rare' },
     { tag: 'game', title: 'Polyglot game dev', when: '2026',
-      desc: 'Godot, Unity, C# and a Fabric Minecraft mod. The skeleton gets around.',
+      desc: 'Godot, Unity and a Fabric Minecraft mod. The skeleton gets around.',
       rarity: 'uncommon' },
     { tag: 'sec', title: 'Crypto-curious', when: '2020',
       desc: 'Worked through the Cryptopals crypto challenges in Python.',
       rarity: 'uncommon' },
-    { tag: 'dev', title: 'Hello, World', when: '2012',
-      desc: 'Pushed a first game to GitHub. It was JavaScript. We don\'t talk about it.',
-      rarity: 'common' }
+    { tag: 'game', title: '600 subscribers', when: 'YouTube',
+      desc: 'Celebrated 600 subscribers on the channel by making a game about it: <a href="https://4a6f62.itch.io/tb4a" target="_blank" rel="noopener">TB4A</a>, with a giveaway.',
+      rarity: 'rare' },
+    { tag: 'game', title: 'Hello, World', when: '2004',
+      desc: 'Made my first games: the <a href="https://4a6f62.itch.io/shifter-the-game" target="_blank" rel="noopener">Shifter</a> platformers. Still playable. Still unforgiving.',
+      rarity: 'legendary' }
   ];
   // =============================================
 
@@ -1419,12 +1443,12 @@
 
   var GAMES = [
     ['smiles-chaos-unbound', 'beat \'em up', 'live on itch.io'],
-    ['the-grinning-spire', 'halloween horror', 'live on itch.io'],
+    ['the-grinning-spire', 'first-person horror', 'live on itch.io'],
     ['return-to-bonkey-island', 'point-and-click', 'live on itch.io'],
     ['escape-the-basement-of-madness', 'text adventure demo', 'live on itch.io'],
-    ['shifter-2', 'platformer', 'live on itch.io'],
+    ['shifter-2', 'platformer (2004)', 'live on itch.io'],
     ['shifter-the-game', 'platformer', 'live on itch.io'],
-    ['tb4a', 'text adventure', 'live on itch.io'],
+    ['tb4a', 'horror text adventure', 'live on itch.io'],
     ['.wip/smiles-in-the-dark', 'survival horror / ctf', 'in the forge'],
     ['.wip/grinning-spire-mod', 'minecraft mod', 'in the forge']
   ];
