@@ -1181,6 +1181,19 @@
       </article>
     </div>
 
+    <p class="ls-head" style="margin-top:28px;" aria-hidden="true">$ ls ~/games/mods/</p>
+    <div class="games">
+      <article class="game">
+        <img class="cover" src="/assets/games/war1gus-scourge.png" alt="Scourge mod screenshot: purple undead units and ziggurats fighting on a Warcraft I forest map" width="315" height="250" loading="lazy">
+        <span class="perm" aria-hidden="true">-rwxr-xr-x  war1gus-scourge/</span>
+        <h3>Scourge: an Undead race for Warcraft I</h3>
+        <span class="genre">RTS mod · War1gus / Stratagus · Lua</span>
+        <p>As a kid I always imagined an undead campaign for Warcraft: Orcs &amp; Humans. It only arrived with Warcraft III, so I added it myself: a third playable race with its own units, buildings and sounds, a 12-mission campaign from Tirisfal Outpost to Capital City with narrated briefings, four skirmish maps, and spells borrowed from Warcraft III like Death Coil and Possession. Bring your own copy of the game.</p>
+        <div class="meta"><span class="pill live">● on github</span><span class="pill">windows</span><span class="pill">linux</span><span class="pill">gpl-2.0</span></div>
+        <a class="btn" href="https://github.com/4a6f62/war1gus-scourge" target="_blank" rel="noopener">▶ Get it on GitHub</a>
+      </article>
+    </div>
+
     <p class="ls-head" style="margin-top:28px;" aria-hidden="true">$ ls ~/games/.wip/</p>
     <div class="games">
       <article class="game">
@@ -1379,6 +1392,9 @@
   //   { tag: 'sec', title: 'OSCP', desc: 'Offensive Security Certified Professional.', rarity: 'legendary', when: '2025' },
   //   { tag: 'sec', title: 'HTB: Pro Hacker', desc: 'Reached Pro Hacker rank on Hack The Box.', rarity: 'epic', when: '2026' },
   var ACHIEVEMENTS = [
+    { tag: 'game', title: 'Raised the Scourge', when: '2026 · new', date: '2026-11-11',
+      desc: 'Released <a href="https://github.com/4a6f62/war1gus-scourge" target="_blank" rel="noopener">Scourge</a>, a mod that adds a third, undead race to Warcraft: Orcs &amp; Humans (via War1gus), with a 12-mission campaign. The one I wanted as a kid.',
+      rarity: 'epic' },
     { tag: 'game', title: 'Shipped: Return to Bonkey Island', when: '2026', date: '2026-10-11',
       desc: 'Released <a href="https://4a6f62.itch.io/return-to-bonkey-island" target="_blank" rel="noopener">Return to Bonkey Island: a whale of a weekend</a>, a classic nine-verb point-and-click with paper puppets, insult sword fighting and, yes, a whale.',
       rarity: 'epic' },
@@ -1726,6 +1742,7 @@
     ['shifter-2', 'platformer (2004)', 'live on itch.io'],
     ['shifter-the-game', 'platformer', 'live on itch.io'],
     ['tb4a', 'horror text adventure', 'live on itch.io'],
+    ['mods/war1gus-scourge', 'warcraft I undead race mod', 'live on github'],
     ['.wip/smiles-in-the-dark', 'survival horror / ctf', 'in the forge'],
     ['.wip/grinning-spire-mod', 'minecraft mod', 'in the forge']
   ];
