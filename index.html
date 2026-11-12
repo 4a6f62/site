@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -933,7 +933,7 @@
 
   <div class="topbar">
     <span><span class="status-dot" aria-hidden="true"></span>session: guest@4a6f62</span>
-    <button type="button" class="theme-btn" id="themeBtn" aria-label="Toggle light or dark theme">theme: auto</button>
+    <button type="button" class="theme-btn" id="themeBtn" aria-label="Toggle light or dark theme">theme: dark</button>
   </div>
 
   <header class="hero">
@@ -1489,19 +1489,21 @@
 
   // ---------- theme toggle ----------
   var themeBtn = $('#themeBtn');
-  var themes = ['auto', 'dark', 'light'];
-  function applyTheme(t) {
+  // Dark is the default. A visitor's own choice (button or `theme` command) is remembered.
+  var themes = ['dark', 'light', 'auto'];
+  var THEME_KEY = 'themeChoice';
+  function applyTheme(t, save) {
     if (t === 'auto') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', t);
     themeBtn.textContent = 'theme: ' + t;
-    try { localStorage.setItem('theme', t); } catch (e) {}
+    if (save) { try { localStorage.setItem(THEME_KEY, t); } catch (e) {} }
   }
-  var savedTheme = 'auto';
-  try { savedTheme = localStorage.getItem('theme') || 'auto'; } catch (e) {}
-  applyTheme(themes.indexOf(savedTheme) > -1 ? savedTheme : 'auto');
+  var savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem(THEME_KEY) || 'dark'; } catch (e) {}
+  applyTheme(themes.indexOf(savedTheme) > -1 ? savedTheme : 'dark');
   themeBtn.addEventListener('click', function () {
     var cur = document.documentElement.getAttribute('data-theme') || 'auto';
-    applyTheme(themes[(themes.indexOf(cur) + 1) % themes.length]);
+    applyTheme(themes[(themes.indexOf(cur) + 1) % themes.length], true);
   });
 
   // ---------- achievements ----------
@@ -1658,18 +1660,18 @@
   });
 
   // ---------- butterflies ----------
-  function butterflies(x, y, n) {
+  function butterflies(x, y, n, glyphs) {
     if (reduceMotion) return;
     for (var i = 0; i < n; i++) {
       var b = document.createElement('span');
       b.className = 'butterfly';
-      b.textContent = ['🦋', '✨', '🦋'][i % 3];
+      b.textContent = (glyphs || ['🦋', '✨', '🦋'])[i % 3];
       b.style.left = x + 'px';
       b.style.top = y + 'px';
       b.style.setProperty('--dx', (Math.random() * 240 - 120) + 'px');
       b.style.setProperty('--dy', (-80 - Math.random() * 200) + 'px');
       b.style.setProperty('--rot', (Math.random() * 90 - 45) + 'deg');
-      b.style.filter = 'hue-rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+      if (!glyphs) b.style.filter = 'hue-rotate(' + Math.floor(Math.random() * 360) + 'deg)';
       document.body.appendChild(b);
       setTimeout(function (el) { el.remove(); }, 2700, b);
     }
@@ -1688,6 +1690,31 @@
     peekTimer = setTimeout(function () { peek.classList.remove('show'); }, 2600);
     butterflies(window.innerWidth - 70, window.innerHeight - 120, 10);
   }
+  // ---------- Scourge (war1gus-scourge easter eggs) ----------
+  var SKULLS = ['💀', '🕷️', '💀'];
+  function raiseDead(n) {
+    var w = window.innerWidth, h = window.innerHeight;
+    for (var i = 0; i < 5; i++) butterflies(w * (0.1 + 0.2 * i), h - 20, n || 3, SKULLS);
+  }
+  var scourgeCover = document.querySelector('img[src$="war1gus-scourge.png"]');
+  var coverClicks = 0;
+  if (scourgeCover) scourgeCover.addEventListener('click', function (e) {
+    coverClicks++;
+    if (coverClicks % 5 === 0) { butterflies(e.clientX, e.clientY, 9, SKULLS); scourgeCover.title = 'Stop poking the ghouls.'; }
+  });
+  var possessTimer;
+  function possess() {
+    var root = document.documentElement, label = document.querySelector('label[for="termInput"]');
+    root.style.setProperty('--brand', 'var(--violet)');
+    label.textContent = 'banshee@4a6f62:~$';
+    clearTimeout(possessTimer);
+    possessTimer = setTimeout(function () {
+      root.style.removeProperty('--brand');
+      label.textContent = 'guest@4a6f62:~$';
+      line('<span class="dim">// the banshee lets go. you are yourself again. probably.</span>');
+    }, 12000);
+  }
+
   var KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
   var kpos = 0;
   document.addEventListener('keydown', function (e) {
@@ -1791,7 +1818,7 @@
         '  htb             hack the box badges',
         '  press           where I\'ve been written up',
         '  goto &lt;section&gt;  achievements|career|security|games|smiles|dnd|youtube|contact',
-        '  theme           cycle light/dark/auto',
+        '  theme           cycle dark/light/auto',
         '  socials         where to find me',
         '  clear           clear the screen',
         '<span class="dim">psst: there are more commands than this. try things.</span>'
@@ -1828,6 +1855,10 @@
         line('<span class="dim">→ all games: <a href="https://4a6f62.itch.io" target="_blank" rel="noopener">4a6f62.itch.io</a></span>');
       } else if (target === '' || target === '.') {
         line('<span class="vio">achievements/</span>  <span class="vio">career/</span>  <span class="vio">security/</span>  <span class="vio">games/</span>  <span class="vio">smiles/</span>  <span class="vio">dnd/</span>  <span class="vio">youtube/</span>  about.txt  contact.txt  me.jpg  <span class="dim">.secret</span>');
+      } else if (target === '.old_websites') {
+        line('<span class="dim">total 5 · last modified 2004</span>');
+        line('index.htm  under_construction.gif  guestbook.cgi  visitor_counter.txt  <span class="vio">frames/</span>');
+        line('<span class="dim">// best viewed in 800×600. try: cat .old_websites/visitor_counter.txt</span>');
       } else if (target === '-la' || target === '-a') {
         line('<span class="vio">.</span>  <span class="vio">..</span>  <span class="dim">.secret</span>  <span class="dim">.bash_history</span>  <span class="dim">.old_websites/</span>  achievements/  games/  smiles/  about.txt');
       } else {
@@ -1839,8 +1870,13 @@
       if (f === 'me.jpg' || f === 'me.png' || f === 'me.webp') { var pre = document.createElement('div'); pre.className = 'ln ascii ok'; pre.textContent = ME_ASCII.join('\n'); out.appendChild(pre); line('<span class="dim">// the real me. hover the photo up top for the HD version.</span>'); out.scrollTop = out.scrollHeight; }
       else if (f === 'about.txt') line('I break into things for a living and get chased by things in games for fun.');
       else if (f === 'contact.txt') COMMANDS.socials();
+      else if (f === '.old_websites/visitor_counter.txt') line('You are visitor <span class="warn">#000042</span>. <span class="dim">(it has said that since 2004)</span>');
+      else if (f === '.old_websites/under_construction.gif') line('🚧 <span class="warn">UNDER CONSTRUCTION</span> 🚧 <span class="dim">(still. always.)</span>');
+      else if (f === '.old_websites/guestbook.cgi') lines(['<span class="dim">--- guestbook ---</span>', 'smiles: first! MYAAH!', 'solarion: This website is an affront to the Static Light.', 'grrarrg: grrarrg.']);
+      else if (f === '.old_websites/index.htm') line('&lt;marquee&gt;&lt;blink&gt;Welcome to my homepage!!&lt;/blink&gt;&lt;/marquee&gt;', 'dim');
+      else if (f.indexOf('.old_websites') === 0) line('cat: ' + esc(f) + ': lost in a hard drive crash', 'err');
       else if (f === '.secret') line('<span class="ok">↑ ↑ ↓ ↓ ← → ← → b a</span>');
-      else if (f === '.bash_history') lines(['nmap -sC -sV spire.local', 'hydra -l solarion -P rockyou.txt spire.local ssh', 'echo "petunias" &gt; whale.txt', 'sudo make me-a-sandwich', '<span class="dim">rm -rf /order-of-the-static-light</span>']);
+      else if (f === '.bash_history') lines(['nmap -sC -sV spire.local', 'hydra -l solarion -P rockyou.txt spire.local ssh', 'echo "petunias" &gt; whale.txt', 'sudo make me-a-sandwich', 'stratagus -d ~/wc1-scourge', 'corwin of amber', '<span class="dim">rm -rf /order-of-the-static-light</span>']);
       else if (f === 'achievements.log') COMMANDS.achievements();
       else if (f === '/etc/passwd') lines(['root:x:0:0:root:/root:/bin/bash', 'smiles:x:42:42:Smiles the Unalive,,,:/spire/boneroom:/bin/chaos', 'solarion:x:1000:1000:nice try:/cathedral:/usr/sbin/nologin', '<span class="dim">// you thought.</span>']);
       else line('cat: ' + esc(f || '') + ': No such file or directory', 'err');
@@ -1971,8 +2007,57 @@
         '2023-08-24  blog · <a href="https://parell.nl/usb-stick-wantrouwen-informatiebeveiliging/" target="_blank" rel="noopener">Waarom je een usb stick moet wantrouwen</a>'
       ]);
     },
+    scourge: function () {
+      lines([
+        '<span class="vio">☠ The Scourge</span> · third race for Warcraft: Orcs &amp; Humans',
+        'Acolyte · Ghoul · Crypt Fiend · Abomination · Meat Wagon · Necromancer · Banshee',
+        '<span class="dim">spells: raise · deathcoil · possess</span>',
+        '→ <a href="https://github.com/4a6f62/war1gus-scourge" target="_blank" rel="noopener">github.com/4a6f62/war1gus-scourge</a>'
+      ]);
+      goTo('games');
+    },
+    raise: function () {
+      line('<span class="vio">Raise Dead.</span> ' + (history.length - 1) + ' old command' + (history.length === 2 ? '' : 's') + ' claw out of your shell history.');
+      raiseDead(3);
+    },
+    deathcoil: function () {
+      if (d(2) === 1) line('<span class="ok">Death Coil</span> hits Smiles. He is undead, so it heals him for ' + (d(6) + d(6)) + '. "That tickles! MYAAH!"');
+      else line('<span class="err">Death Coil</span> hits Solarion for ' + (d(6) + d(6)) + '. He remains visibly annoyed.');
+    },
+    possess: function () {
+      line('<span class="vio">Possession.</span> A banshee takes permanent control of this terminal. <span class="dim">(permanent: about 12 seconds)</span>');
+      possess();
+    },
+    zug: function () { line('Dabu.'); },
     whale: function () { line('🐋 Oh no, not again.  <span class="dim">— a bowl of petunias</span>'); }
   };
+  COMMANDS.dabu = COMMANDS.zug;
+  COMMANDS.necromancer = COMMANDS.raise;
+  COMMANDS.banshee = COMMANDS.possess;
+
+  // Warcraft I cheat codes. Like the real game, nothing works until "corwin of amber".
+  var cheats = false;
+  var CHEATS = {
+    'pot of gold': function () { line('<span class="warn">+10,000 gold · +5,000 lumber.</span> XP unchanged. That one you have to survive for.'); },
+    'eye of newt': function () { line('All spells researched: <span class="vio">raise</span>, <span class="vio">deathcoil</span>, <span class="vio">possess</span>.'); },
+    'iron forge': function () { line('All upgrades researched. Glaive +1 is now Glaive +1 (shinier).'); },
+    'hurry up guys': function () { line('Build speed increased. The Spire repairs itself even faster now.'); },
+    'ides of march': function () { line('Skipping to the final mission: <span class="warn">Capital City</span>.'); goTo('contact'); },
+    'sally shears': function () {
+      line('<span class="ok">Fog of war lifted.</span> Unexplored commands:');
+      line('<span class="dim">' + Object.keys(COMMANDS).filter(function (k) { return k.length > 1; }).sort().join(' · ') + '</span>');
+    },
+    'there can be only one': function () { line('<span class="ok">✶ VICTORY ✶</span> Units lost: 0. Buildings razed: one cathedral. Score: 4a6f62.'); raiseDead(4); myaah(); },
+    'crushing defeat': function () { line('<span class="err">DEFEAT.</span> Solarion wins. Nobody wanted this. Reload your save.'); }
+  };
+  function tryCheat(phrase) {
+    if (phrase === 'corwin of amber') { cheats = true; line('<span class="ok">cheat enabled you wascally wabbit</span>'); return true; }
+    if (!Object.prototype.hasOwnProperty.call(CHEATS, phrase)) return false;
+    if (cheats) CHEATS[phrase]();
+    else line('cheats are not enabled. <span class="dim">a prince of Amber could help with that.</span>', 'err');
+    return true;
+  }
+
   COMMANDS.dir = COMMANDS.ls;
   COMMANDS['?'] = COMMANDS.help;
   COMMANDS.games = function () { COMMANDS.ls(['games']); };
@@ -1990,6 +2075,7 @@
     if (!cmd) return;
     history.push(cmd); hpos = history.length;
     var parts = cmd.split(/\s+/);
+    if (tryCheat(parts.join(' ').toLowerCase())) return;
     var name = parts[0].toLowerCase();
     var fn = Object.prototype.hasOwnProperty.call(COMMANDS, name) ? COMMANDS[name] : null;
     if (fn) fn(parts.slice(1));
