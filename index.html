@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -933,7 +933,7 @@
 
   <div class="topbar">
     <span><span class="status-dot" aria-hidden="true"></span>session: guest@4a6f62</span>
-    <button type="button" class="theme-btn" id="themeBtn" aria-label="Toggle light or dark theme">theme: auto</button>
+    <button type="button" class="theme-btn" id="themeBtn" aria-label="Toggle light or dark theme">theme: dark</button>
   </div>
 
   <header class="hero">
@@ -1489,19 +1489,21 @@
 
   // ---------- theme toggle ----------
   var themeBtn = $('#themeBtn');
-  var themes = ['auto', 'dark', 'light'];
-  function applyTheme(t) {
+  // Dark is the default. A visitor's own choice (button or `theme` command) is remembered.
+  var themes = ['dark', 'light', 'auto'];
+  var THEME_KEY = 'themeChoice';
+  function applyTheme(t, save) {
     if (t === 'auto') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', t);
     themeBtn.textContent = 'theme: ' + t;
-    try { localStorage.setItem('theme', t); } catch (e) {}
+    if (save) { try { localStorage.setItem(THEME_KEY, t); } catch (e) {} }
   }
-  var savedTheme = 'auto';
-  try { savedTheme = localStorage.getItem('theme') || 'auto'; } catch (e) {}
-  applyTheme(themes.indexOf(savedTheme) > -1 ? savedTheme : 'auto');
+  var savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem(THEME_KEY) || 'dark'; } catch (e) {}
+  applyTheme(themes.indexOf(savedTheme) > -1 ? savedTheme : 'dark');
   themeBtn.addEventListener('click', function () {
     var cur = document.documentElement.getAttribute('data-theme') || 'auto';
-    applyTheme(themes[(themes.indexOf(cur) + 1) % themes.length]);
+    applyTheme(themes[(themes.indexOf(cur) + 1) % themes.length], true);
   });
 
   // ---------- achievements ----------
@@ -1816,7 +1818,7 @@
         '  htb             hack the box badges',
         '  press           where I\'ve been written up',
         '  goto &lt;section&gt;  achievements|career|security|games|smiles|dnd|youtube|contact',
-        '  theme           cycle light/dark/auto',
+        '  theme           cycle dark/light/auto',
         '  socials         where to find me',
         '  clear           clear the screen',
         '<span class="dim">psst: there are more commands than this. try things.</span>'
