@@ -62,7 +62,7 @@
   <header>
     <p class="prompt-line"><span class="sigil">$</span> cat privacy.txt</p>
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: November 1, 2026</p>
+    <p class="updated">Last updated: November 13, 2026</p>
   </header>
 
   <main>
@@ -78,8 +78,11 @@
     <h2>4. Videos (YouTube)</h2>
     <p>Images on the page (game covers and badges) are served from 4a6f62.com itself; nothing is loaded from itch.io or Hack The Box. The page has a button to view videos. <strong>Nothing is loaded from YouTube until you click that button yourself.</strong> Once you click, a privacy-enhanced YouTube embed (<code>youtube-nocookie.com</code>) is loaded; YouTube/Google may then set cookies and process data, particularly if you play a video. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.</p>
 
-    <h2>5. No own tracking</h2>
-    <p>This site does not use its own analytics, advertising cookies, or tracking scripts. No contact form or other form is offered that would collect personal data.</p>
+    <h2>5. Visitor statistics (GoatCounter)</h2>
+    <p>To see how many people visit and where they came from, this site uses <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>, an open-source visitor counter. Your browser loads a small script from <code>gc.zgo.at</code> and reports the visit to <code>smiles.goatcounter.com</code>.</p>
+    <p>GoatCounter sets no cookies and stores nothing in your browser. It keeps only totals per day or hour: the page visited, the referring site, browser and operating system, screen width, language and country. Your IP address and full User-Agent are used briefly in memory to work out the country and to count repeat page loads as one visit (for up to 8 hours); they are never written to disk. The totals cannot be linked to each other or back to a person. Data is stored on servers in Finland and Germany. See <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">GoatCounter's privacy policy</a>.</p>
+    <p><strong>If your browser sends Do Not Track or Global Privacy Control, your visit is not counted at all.</strong></p>
+    <p>Beyond that, this site uses no advertising cookies and no other tracking scripts. No contact form or other form is offered that would collect personal data. If you change the colour theme, that choice is saved in your own browser (local storage) and never sent anywhere.</p>
 
     <h2>6. External links</h2>
     <p>Links to YouTube, GitHub, LinkedIn, itch.io, Hack The Box, Roll20 and parell.nl lead to third-party services with their own privacy policies. This policy only covers 4a6f62.com itself.</p>
@@ -92,5 +95,11 @@
     <a class="back" href="/">&larr; Back to 4a6f62.com</a>
   </footer>
 </div>
+<!-- Visitor counter: GoatCounter. No cookies, no stored IP addresses. Skipped when the browser sends Do Not Track or Global Privacy Control. -->
+<script>
+  if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl) window.goatcounter = { no_onload: true };
+</script>
+<script data-goatcounter="https://smiles.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
 </body>
 </html>
